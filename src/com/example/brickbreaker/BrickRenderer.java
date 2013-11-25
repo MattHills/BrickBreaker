@@ -22,7 +22,7 @@ public class BrickRenderer implements GLSurfaceView.Renderer{
 
 	@Override
 	public void onSurfaceCreated(GL10 arg0, EGLConfig arg1) {
-		GLES20.glClearColor(0.2f, 0.2f, 0.5f, 1.0f);
+		GLES20.glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
 		
 	}
 
