@@ -1,61 +1,31 @@
 package com.example.brickbreaker;
 
 import android.app.Activity;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.Button;
 
-public class MainActivity extends Activity implements SensorEventListener {
-    private SensorManager sensorManager;
+public class MainActivity extends Activity {
 
-    TextView xCoor; // declare X axis object
-    TextView yCoor; // declare Y axis object
-    TextView zCoor; // declare Z axis object
-
+	Button quickPlay;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_main);
-
-	xCoor = (TextView) findViewById(R.id.xCoord); // create X axis object
-	yCoor = (TextView) findViewById(R.id.yCoord); // create Y axis object
-	zCoor = (TextView) findViewById(R.id.zCoord); // create Z axis object
-
-	sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-	// add listener. The listener will be HelloAndroid (this) class
-	sensorManager.registerListener(this,
-		sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-		SensorManager.SENSOR_DELAY_NORMAL);
-
-	/*
-	 * More sensor speeds (taken from api docs) SENSOR_DELAY_FASTEST get
-	 * sensor data as fast as possible SENSOR_DELAY_GAME rate suitable for
-	 * games SENSOR_DELAY_NORMAL rate (default) suitable for screen
-	 * orientation changes
-	 */
-    }
-
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
-    public void onSensorChanged(SensorEvent event) {
-
-	// check sensor type
-	if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
-	    // assign directions
-	    float x = event.values[0];
-	    float y = event.values[1];
-	    float z = event.values[2];
-
-	    xCoor.setText("X: " + x);
-	    yCoor.setText("Y: " + y);
-	    zCoor.setText("Z: " + z);
-	}
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		quickPlay = (Button) findViewById(R.id.quickPlay);
+		
+		quickPlay.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, Game.class);
+				startActivity(intent);				
+			}
+		});
+	
     }
 }
