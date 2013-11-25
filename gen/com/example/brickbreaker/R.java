@@ -46,6 +46,7 @@ public final class R {
         public static final int hello_world=0x7f070002;
         public static final int leaderboards=0x7f070005;
         public static final int login=0x7f070006;
+        public static final int preferences=0x7f07000a;
         public static final int quick_play=0x7f070004;
         public static final int select_game_difficulty=0x7f070009;
         public static final int settings=0x7f070007;

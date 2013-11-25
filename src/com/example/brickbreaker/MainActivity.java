@@ -1,10 +1,12 @@
 package com.example.brickbreaker;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,13 +18,12 @@ public class MainActivity extends Activity {
     Button login;
     Button leaderboards;
 
+    private final String filename = "BrickBreakerLocalLeaderboard";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_main);
-
-	SharedPreferences prefs = PreferenceManager
-		.getDefaultSharedPreferences(this);
 
 	quickPlay = (Button) findViewById(R.id.QuickPlay);
 
@@ -81,5 +82,36 @@ public class MainActivity extends Activity {
 	    break;
 	}
 	return ret;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	if (requestCode == 1) {
+	    if (resultCode == RESULT_OK) {
+
+	    }
+	}
+
+    }
+
+    // Saving contacts to a file
+    private void saveHighScore() {
+
+	FileOutputStream os;
+
+	try {
+	    boolean exists = (new File(this.getFilesDir() + filename).exists());
+	    // Create the file and directories if they do not exist
+	    if (!exists) {
+		new File(this.getFilesDir() + filename).mkdirs();
+	    }
+	    // Saving the file
+	    os = new FileOutputStream(this.getFilesDir() + filename, false);
+	    ObjectOutputStream oos = new ObjectOutputStream(os);
+	    oos.writeObject(contactList);
+	    oos.close();
+	    os.close();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
     }
 }
