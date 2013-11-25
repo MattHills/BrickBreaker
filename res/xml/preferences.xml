@@ -1,0 +1,29 @@
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+            android:title="Sort Contacts">
+
+       <CheckBoxPreference
+            android:key="sortContacts"
+            android:title="Sort Contacts"
+            android:defaultValue="false"
+            android:summaryOn="Sort by First Name" 
+            android:summaryOff="Sort by Last Name"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="Difficulty">
+
+       <ListPreference
+                android:key="dateFormatDisplay"
+                android:title="@string/difficulty"
+                android:summary="@string/select_game_difficulty"
+                android:entries="@array/entries_list_preference"
+                android:entryValues="@array/entryvalues_list_preference"
+                android:dialogTitle="@string/difficulty" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
