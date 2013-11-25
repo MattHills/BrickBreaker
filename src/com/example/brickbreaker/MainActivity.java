@@ -107,7 +107,7 @@ public class MainActivity extends Activity {
 	    // Saving the file
 	    os = new FileOutputStream(this.getFilesDir() + filename, false);
 	    ObjectOutputStream oos = new ObjectOutputStream(os);
-	    oos.writeObject(contactList);
+	    // oos.writeObject();
 	    oos.close();
 	    os.close();
 	} catch (Exception e) {
