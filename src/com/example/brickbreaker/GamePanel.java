@@ -7,12 +7,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -76,15 +72,15 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		paint.setColor(Ball.BALL_COLOUR);
 		
-		if(!gameRunning)
-			ball.setPosition(canvas.getWidth()/2, canvas.getHeight() - 50);
-		else
+		if(!ball.initialized)
+			ball.initialize(canvas.getWidth(), canvas.getHeight());
+		
+		if(gameRunning)
 		{
-			Position p = new Position(ball.position.getX(), ball.position.getY() - 4);
-			ball.setPosition(p);
+			ball.updatePosition();
 		}
 		
-		canvas.drawCircle(ball.getPosition().getX(), ball.getPosition().getY(), ball.radius, paint);
+		canvas.drawCircle(ball.xPosition, ball.yPosition, ball.radius, paint);
 	}
 
 
