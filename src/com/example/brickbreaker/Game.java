@@ -5,25 +5,20 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 
 public class Game extends Activity implements SensorEventListener {	
 	
-	//opengl variables
-	private GLSurfaceView surfaceView;
-	
 	//sensor variables
 	private SensorManager sensorManager;
-
+	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 	    super.onCreate(savedInstanceState);
-	 
-	    surfaceView = new BrickSurfaceView(this);
-        setContentView(surfaceView);
+	    
+	    setContentView(new GamePanel(this));
 	    
 	    sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 	    
@@ -45,5 +40,4 @@ public class Game extends Activity implements SensorEventListener {
 		    //use sensor coords
 		}
     }
-
 }
