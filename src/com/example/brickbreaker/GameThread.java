@@ -1,10 +1,8 @@
 package com.example.brickbreaker;
-
-import android.annotation.SuppressLint;
+ 
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
-@SuppressLint("WrongCall")
 public class GameThread extends Thread
 {
 	private SurfaceHolder surfaceHolder;
@@ -40,12 +38,15 @@ public class GameThread extends Thread
 			try {
                 canvas = surfaceHolder.lockCanvas(null);
                 synchronized (surfaceHolder) {
-                    gamePanel.onDraw(canvas);
+                	if(canvas == null)
+                		break;
+                	
+                    gamePanel.Draw(canvas);
                 }
             } finally {
-                // do this in a finally so that if an exception is thrown
-                // during the above, we don't leave the Surface in an
-                // inconsistent state
+                /* if exception is thrown, unlockCanvasAndPost
+                 * is called, so canvas does not stay locked
+                 */
                 if (canvas != null) {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                 }

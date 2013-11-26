@@ -8,37 +8,51 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 {
+	//constants
+	public static final int STARTING_LIVES = 3;
+	
 	//game objects
 	private List<Brick> bricks;
 	private Ball ball;
+	private Bar bar;
+	
+	//game options
 	boolean gameRunning;
+	int lives;
+	int score;
 	
 	GameThread gameThread;
 
+	//canvas items
 	Paint paint = new Paint();
-	RectF r = new RectF(50.0f, 22.0f, 100.0f, 200.0f);
 	
 	public GamePanel(Context context) {
 		super(context);	
-	    
-		paint.setStrokeWidth(1);
-		paint.setStyle(Paint.Style.FILL_AND_STROKE);
-		paint.setStrokeCap(Paint.Cap.ROUND);
-		paint.setStrokeJoin(Paint.Join.ROUND);
-	    
+	    	    
 	    getHolder().addCallback(this);
 
 	    gameThread = new GameThread(getHolder(), this);
 	    
 	    loadLevel();
 	    setFocusable(true);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keycode, KeyEvent event){
+		if (keycode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+	        gameRunning = false;
+	        gameThread.stopThread();
+	        return true;
+	    }
+
+	    return super.onKeyDown(keycode, event);
 	}
 
 	@Override
@@ -59,10 +73,26 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 		gameThread.stopThread();	
 	}
 	
-	@Override
-	public void onDraw(Canvas canvas)
+	public void Draw(Canvas canvas)
 	{		
-		canvas.drawColor(Color.BLUE);
+		if(!ball.isAlive)
+		{
+			if(lives > 0)
+			{
+				ball = new Ball();
+				gameRunning = false;
+				//commented out for testing
+				//lives--;
+			}
+			else
+			{
+				//end game
+			}
+		}
+		
+		
+		//background color
+		canvas.drawColor(Color.DKGRAY);
 		
 		for(int i = 0; i < bricks.size(); i++)
 		{
@@ -72,27 +102,36 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		paint.setColor(Ball.BALL_COLOUR);
 		
-		if(!ball.initialized)
-			ball.initialize(canvas.getWidth(), canvas.getHeight());
-		
 		if(gameRunning)
 		{
 			ball.updatePosition();
+			bar.updatePosition();
+		}
+		else
+		{
+			bar.initialize(canvas.getWidth(), canvas.getHeight(), ball.radius);
+			ball.initialize(canvas.getWidth(), canvas.getHeight());
 		}
 		
+		//draw ball
 		canvas.drawCircle(ball.xPosition, ball.yPosition, ball.radius, paint);
+		
+		//draw bar
+		canvas.drawRect(bar.rect, paint);
 	}
 
 
     private void loadLevel()
-    {
+    {    	
     	gameRunning = false;
+    	lives = STARTING_LIVES;
     	
 	    bricks = new ArrayList<Brick>();
     	bricks.add(new Brick(new Rect(10, 10, 160, 40), Color.CYAN, 2));
     	bricks.add(new Brick(new Rect(40, 40, 190, 70), Color.GREEN, 2));
     	
     	ball = new Ball();
+    	bar = new Bar();
     }
     
     @Override
