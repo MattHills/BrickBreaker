@@ -1,4 +1,4 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
 
 /* Matt Hills
  * 4640512

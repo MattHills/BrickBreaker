@@ -1,4 +1,4 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
 
 import android.app.Activity;
 import android.hardware.Sensor;

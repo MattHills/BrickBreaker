@@ -1,4 +1,4 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
 
 import java.util.Date;
 

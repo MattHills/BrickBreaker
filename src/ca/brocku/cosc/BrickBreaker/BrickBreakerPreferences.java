@@ -1,4 +1,6 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
+
+import com.example.brickbreaker.R;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;

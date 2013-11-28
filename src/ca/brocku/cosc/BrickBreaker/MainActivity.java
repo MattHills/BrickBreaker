@@ -1,8 +1,10 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+
+import com.example.brickbreaker.R;
 
 import android.app.Activity;
 import android.content.Intent;

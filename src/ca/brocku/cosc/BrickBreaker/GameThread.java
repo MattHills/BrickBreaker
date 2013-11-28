@@ -1,4 +1,4 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
  
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
@@ -29,8 +29,25 @@ public class GameThread extends Thread
 	@Override
 	public void run()
 	{
-		Canvas canvas;
+		Canvas canvas = null;
 		
+		try {
+            canvas = surfaceHolder.lockCanvas(null);
+            synchronized (surfaceHolder) {
+            	if(canvas != null){
+            		gamePanel.initializePanel(canvas);
+              	}
+            	
+            }
+        } finally {
+            /* if exception is thrown, unlockCanvasAndPost
+             * is called, so canvas does not stay locked
+             */
+            if (canvas != null) {
+                surfaceHolder.unlockCanvasAndPost(canvas);
+            }
+        }
+				
 		while(isRunning)
 		{
 			canvas = null;

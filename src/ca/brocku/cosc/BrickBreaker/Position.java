@@ -1,4 +1,4 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
 
 /**
  * Created by dl08ti on 18/11/13.

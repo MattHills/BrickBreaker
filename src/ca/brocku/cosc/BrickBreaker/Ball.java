@@ -1,4 +1,4 @@
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
 
 import android.graphics.Color;
 
@@ -13,7 +13,7 @@ public class Ball {
 	boolean initialized;
 	boolean isAlive;
 
-	float radius = 5;
+	float radius;
 	float xDirection;
 	float yDirection;
 	float speed;
@@ -23,7 +23,9 @@ public class Ball {
 
 	public static final int BALL_COLOUR = Color.LTGRAY;
 
-	public Ball() {
+	public Ball(float radius) {
+		this.radius = radius;
+		
 		initialized = false;
 		isAlive = true;
 
@@ -49,7 +51,7 @@ public class Ball {
 		initialized = true;
 		this.canvasWidth = canvasWidth;
 		this.canvasHeight = canvasHeight;
-		setPosition(canvasWidth / 2, canvasHeight - 50);
+		setPosition(canvasWidth / 2, canvasHeight - 140);
 	}
 
 	public void updatePosition() {

@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo">
         <activity
-            android:name="com.example.brickbreaker.MainActivity"
+            android:name="ca.brocku.cosc.BrickBreaker.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,9 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="Game"></activity>
+        <activity android:name="ca.brocku.cosc.BrickBreaker.Game"></activity>
          <activity   
-            android:name=".BrickBreakerPreferencesActivity" 
+            android:name="ca.brocku.cosc.BrickBreaker.BrickBreakerPreferencesActivity" 
             android:label="@string/preferences">
  		</activity>
     </application>
