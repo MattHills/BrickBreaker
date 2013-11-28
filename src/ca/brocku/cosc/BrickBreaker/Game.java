@@ -12,6 +12,7 @@ public class Game extends Activity implements SensorEventListener {
 	
 	//sensor variables
 	private SensorManager sensorManager;
+	private GamePanel gamePanel;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -22,7 +23,8 @@ public class Game extends Activity implements SensorEventListener {
 	    //Remove title bar
 	    this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    
-	    setContentView(new GamePanel(this));
+	    gamePanel = new GamePanel(this);
+	    setContentView(gamePanel);
 	    
 	    sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 	    
@@ -40,8 +42,16 @@ public class Game extends Activity implements SensorEventListener {
 
 		// check sensor type
 		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+			
+			/**
+			 * Remove 1 or 2 axis that are not needed, needs to be
+			 * implemented with a real device
+			 */
 	
-		    //use sensor coords
+			//send values to the GamePanel
+		    gamePanel.updateAccelerometer(event.values[0], 
+							    		event.values[1], 
+							    		event.values[2]);
 		}
     }
 }

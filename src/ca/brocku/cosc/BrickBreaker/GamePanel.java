@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.hardware.SensorEvent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -126,7 +127,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		paint.setColor(Ball.BALL_COLOUR);
 
 		if (gameRunning) {
-			ball.updatePosition();
+			ball.updatePosition(bricks);
 			bar.updatePosition();
 		} else {
 			bar.initialize(panelWidth, panelHeight);
@@ -148,6 +149,19 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		return false;
+	}
+	
+	public void updateAccelerometer(float x, float y, float z){
+
+		/**
+		 * Remove 1 or 2 axis that are not needed, needs to be
+		 * implemented with a real device. Will have to pass
+		 * the values to bar as well
+		 */
+		
+		if(!gameRunning){
+			bar.updatePosition();
+		}
 	}
 
 }
