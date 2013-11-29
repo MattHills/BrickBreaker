@@ -1,11 +1,15 @@
 package ca.brocku.cosc.BrickBreaker;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by dl08ti on 18/11/13.
  */
-public class Score {
+public class Score implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     int score;
     String name;
     Date date;
@@ -33,4 +37,10 @@ public class Score {
     public void setDate(Date date) {
 	this.date = date;
     }
+
+    @Override
+    public String toString() {
+	return "Score [name=" + name + " , score=" + score + "]";
+    }
+
 }

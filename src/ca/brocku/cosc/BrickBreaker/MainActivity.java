@@ -1,24 +1,37 @@
 package ca.brocku.cosc.BrickBreaker;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import com.example.brickbreaker.R;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.brickbreaker.R;
 
 public class MainActivity extends Activity {
 
     Button quickPlay;
-    Button login;
     Button leaderboards;
+
+    TextView highScore;
+    TextView username;
+
+    JSONFunctions jsonFunctions;
+
+    ArrayList<Score> scores;
 
     private final String filename = "BrickBreakerLocalLeaderboard";
 
@@ -38,16 +51,6 @@ public class MainActivity extends Activity {
 	    }
 	});
 
-	login = (Button) findViewById(R.id.Login);
-	login.setOnClickListener(new View.OnClickListener() {
-
-	    @Override
-	    public void onClick(View v) {
-		Intent intent = new Intent(MainActivity.this, Game.class);
-		startActivity(intent);
-	    }
-	});
-
 	leaderboards = (Button) findViewById(R.id.Leaderboards);
 	leaderboards.setOnClickListener(new View.OnClickListener() {
 
@@ -57,6 +60,22 @@ public class MainActivity extends Activity {
 		startActivity(intent);
 	    }
 	});
+
+	username = (TextView) findViewById(R.id.Username);
+
+	setName();
+
+	highScore = (TextView) findViewById(R.id.HighScore);
+
+	scores = readScores();
+
+	displayHighScore();
+
+	jsonFunctions = new JSONFunctions();
+	jsonFunctions
+		.execute("http://brockcoscbrickbreakerleaderboard.web44.net/");
+
+	MySQLHelper db = new MySQLHelper(this);
 
     }
 
@@ -89,10 +108,63 @@ public class MainActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	if (requestCode == 1) {
 	    if (resultCode == RESULT_OK) {
-
+		setName();
 	    }
 	}
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private ArrayList<Score> readScores() {
+	ArrayList<Score> contacts = null;
+
+	try {
+	    File inputFile = null;
+	    boolean exists = (new File(this.getFilesDir() + filename).exists());
+	    // Create the file and directories if they do not exist
+	    if (exists) {
+		new File(this.getFilesDir() + filename).delete();
+		exists = false;
+	    }
+	    if (exists) {
+		FileInputStream fis = new FileInputStream(inputFile);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		contacts = (ArrayList<Score>) ois.readObject();
+		ois.close();
+		fis.close();
+	    }
+	    if (!exists) {
+		scores = null;
+		saveHighScore();
+	    }
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+	return contacts;
+    }
+
+    private void setName() {
+	SharedPreferences prefs = PreferenceManager
+		.getDefaultSharedPreferences(this);
+
+	// Gets user's sort preferences
+	if (prefs.getString("username", "").isEmpty()) {
+	    username.setText("No username selected, please select user name in settings.");
+	} else {
+	    username.setText("Welcome " + prefs.getString("username", ""));
+	}
+
+    }
+
+    private void displayHighScore() {
+	if (scores != null && !scores.isEmpty()) {
+	    ScoreComparator comparator = new ScoreComparator();
+	    Collections.sort(scores, comparator);
+	    Score hs = scores.get(0);
+	    highScore.setText("High Score: " + hs.getScore());
+	}
     }
 
     // Saving contacts to a file
@@ -109,7 +181,7 @@ public class MainActivity extends Activity {
 	    // Saving the file
 	    os = new FileOutputStream(this.getFilesDir() + filename, false);
 	    ObjectOutputStream oos = new ObjectOutputStream(os);
-	    // oos.writeObject();
+	    oos.writeObject(scores);
 	    oos.close();
 	    os.close();
 	} catch (Exception e) {

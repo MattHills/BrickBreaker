@@ -4,6 +4,12 @@
     android:gravity="center"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/Username"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content">
+    </TextView>
+    
     <Button
         android:id="@+id/QuickPlay"
         android:layout_width="150dp"
@@ -11,15 +17,15 @@
         android:text="@string/quick_play" />
 
     <Button
-        android:id="@+id/Login"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="@string/login" />
-
-    <Button
         android:id="@+id/Leaderboards"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/leaderboards" />
+
+    <TextView
+        android:id="@+id/HighScore"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content">
+    </TextView>
 
 </LinearLayout>

@@ -14,6 +14,7 @@ package ca.brocku.cosc.BrickBreaker;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 @SuppressLint("NewApi")
@@ -24,5 +25,12 @@ public class BrickBreakerPreferencesActivity extends Activity {
 	getFragmentManager().beginTransaction()
 		.replace(android.R.id.content, new BrickBreakerPreferences())
 		.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+	Intent returnIntent = new Intent();
+	setResult(RESULT_OK, returnIntent);
+	super.onBackPressed();
     }
 }

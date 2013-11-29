@@ -17,7 +17,7 @@
             android:title="Difficulty">
 
        <ListPreference
-                android:key="dateFormatDisplay"
+                android:key="difficulty"
                 android:title="@string/difficulty"
                 android:summary="@string/select_game_difficulty"
                 android:entries="@array/entries_list_preference"
@@ -25,6 +25,13 @@
                 android:defaultValue="Medium"
                 android:dialogTitle="@string/difficulty" />
 
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="Set User Name" >
+        <EditTextPreference
+                android:title="Set User Name"
+                android:summary="Set User Name for Leaderboards"
+                android:key="username"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
