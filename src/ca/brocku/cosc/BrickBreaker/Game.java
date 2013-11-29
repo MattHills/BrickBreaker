@@ -48,7 +48,7 @@ public class Game extends Activity implements SensorEventListener {
 	// check sensor type
 	if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-	    gamePanel.updateAccelerometer(event.values[0]);
+	    gamePanel.updateAccelerometer(-event.values[0]);
 	    // mBallSpd.y = event.values[1];
 	    // send values to the GamePanel
 	    // gamePanel.updateAccelerometer(event.values[0], event.values[1],

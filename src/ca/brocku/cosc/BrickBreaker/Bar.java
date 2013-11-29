@@ -20,12 +20,12 @@ public class Bar {
     boolean initialized;
 
     public Bar() {
-    	initialized = false;
+	initialized = false;
     }
 
     public void setPosition(int x, int y) {
-		xPosition = x;
-		yPosition = y;
+	xPosition = x;
+	yPosition = y;
     }
 
     public void initialize(int panelWidth, int panelHeight) {
@@ -47,6 +47,13 @@ public class Bar {
 
     public void updatePosition() {
 	rect.offset((int) xPosition, 0);
+
+	if (rect.left < 0) {
+	    rect.offsetTo(0, (int) panelHeight - 100 - barHeight);
+	} else if (rect.right > panelWidth) {
+	    rect.offsetTo(panelWidth - barWidth, (int) panelHeight - 100
+		    - barHeight);
+	}
     }
 
     public Rect getRect() {
