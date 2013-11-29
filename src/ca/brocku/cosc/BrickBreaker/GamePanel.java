@@ -79,6 +79,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 	ball = new Ball(ballRadius);
 	bar = new Bar();
+	bar.setPosition(panelWidth / 2, panelHeight / 8);
     }
 
     @Override

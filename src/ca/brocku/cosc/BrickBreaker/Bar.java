@@ -35,17 +35,17 @@ public class Bar {
 	barHeight = panelHeight / 35;
 	barCenter = barWidth / 2;
 
-	rect = new Rect((panelWidth / 2) - barCenter,
-		(int) (panelHeight - 140 + GamePanel.ballRadius),
-		(panelWidth / 2) + barCenter, (int) (panelHeight - 140
-			+ GamePanel.ballRadius + barHeight));
+	rect = new Rect((int) xPosition, (int) yPosition,
+		(int) (xPosition + barWidth), (int) (yPosition + barHeight));
+
+	// rect = new Rect((panelWidth / 2) - barCenter,
+	// (int) (panelHeight - 140 + GamePanel.ballRadius),
+	// (panelWidth / 2) + barCenter, (int) (panelHeight - 140
+	// + GamePanel.ballRadius + barHeight));
     }
 
     public void updatePosition() {
-	rect = new Rect((int) (xPosition - barWidth / 2),
-		(int) (panelHeight - 140 + GamePanel.ballRadius),
-		(int) (xPosition + barWidth / 2), (int) (panelHeight - 140
-			+ GamePanel.ballRadius + barHeight));
+	rect.offset((int) xPosition, (int) yPosition);
     }
 
     public Rect getRect() {
