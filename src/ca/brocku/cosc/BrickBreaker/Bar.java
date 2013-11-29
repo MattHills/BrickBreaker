@@ -20,12 +20,12 @@ public class Bar {
     boolean initialized;
 
     public Bar() {
-	initialized = false;
+    	initialized = false;
     }
 
     public void setPosition(int x, int y) {
-	xPosition = x;
-	yPosition = y;
+		xPosition = x;
+		yPosition = y;
     }
 
     public void initialize(int panelWidth, int panelHeight) {

@@ -28,6 +28,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     int panelHeight;
     int brickWidth;
     int brickHeight;
+    int brickPadding;
+    
     android.graphics.PointF barPos;
     public static float ballRadius;
 
@@ -42,46 +44,59 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     Paint paint = new Paint();
 
     public GamePanel(Context context, Point size) {
-	super(context);
-	this.size = size;
-
-	barPos = new android.graphics.PointF();
-	barPos.x = 0;
-	barPos.y = 0;
-	getHolder().addCallback(this);
-	gameThread = new GameThread(getHolder(), this);
-
-	setFocusable(true);
+		super(context);
+		this.size = size;
+	
+		barPos = new android.graphics.PointF();
+		barPos.x = 0;
+		barPos.y = 0;
+		getHolder().addCallback(this);
+		gameThread = new GameThread(getHolder(), this);
+	
+		setFocusable(true);
     }
 
     public void initializePanel(Canvas canvas) {
 
-	panelWidth = size.x;
-	panelHeight = size.y;
-	// panelWidth = canvas.getWidth();
-	// panelHeight = canvas.getHeight();
-	brickWidth = panelWidth / 6;
-	brickHeight = panelHeight / 30;
-
-	ballRadius = panelHeight / 100;
-
-	loadLevel();
+		panelWidth = size.x;
+		panelHeight = size.y;
+		// panelWidth = canvas.getWidth();
+		// panelHeight = canvas.getHeight();
+		brickWidth = panelWidth / 6;
+		brickHeight = panelHeight / 30;
+		brickPadding = panelWidth / 18;
+	
+		ballRadius = panelHeight / 100;
+	
+		loadLevel();
     }
 
     private void loadLevel() {
-	gameRunning = false;
-	lives = STARTING_LIVES;
+		gameRunning = false;
+		lives = STARTING_LIVES;
+	
+		bricks = new ArrayList<Brick>();
 
-	bricks = new ArrayList<Brick>();
-	bricks.add(new Brick(10, 10, brickWidth, brickHeight, Color.CYAN, 2));
-	bricks.add(new Brick(35, 10 + brickHeight, brickWidth, brickHeight,
-		Color.GREEN, 2));
-
-	ball = new Ball(ballRadius);
-	bar = new Bar();
-	bar.setPosition(panelWidth / 2, panelHeight / 10);
-	bar.initialize(panelWidth, panelHeight);
-	ball.initialize(panelWidth, panelHeight);
+		Brick b = new Brick(20, 20, brickWidth, brickHeight, Color.CYAN, 2);
+		bricks.add(b);
+		b = new  Brick(50, 50, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new  Brick(200, 120, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new  Brick(250, 180, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new  Brick(360, 180, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new  Brick(250, 350, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new  Brick(360, 450, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		
+		ball = new Ball(ballRadius);
+		ball.initialize(panelWidth, panelHeight);
+				
+		bar = new Bar();
+		resetBar();
     }
 
     @Override
@@ -112,13 +127,24 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceDestroyed(SurfaceHolder arg0) {
 	gameThread.stopThread();
     }
+    
+    private void resetBar()
+    {
+    	
+		bar.setPosition(panelWidth / 2, panelHeight / 8);
+		bar.initialize(panelWidth, panelHeight);
+    }
 
     public void Draw(Canvas canvas) {
 
 	if (!ball.isAlive) {
 	    if (lives > 0) {
 		ball = new Ball(ballRadius);
+		ball.initialize(panelWidth, panelHeight);
 		gameRunning = false;
+		
+		resetBar();
+
 		// commented out for testing
 		// lives--;
 	    } else {

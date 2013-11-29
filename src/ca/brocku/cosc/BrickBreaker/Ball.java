@@ -3,6 +3,7 @@ package ca.brocku.cosc.BrickBreaker;
 import java.util.List;
 
 import android.graphics.Color;
+import android.util.Log;
 
 /**
  * Created by dl08ti on 18/11/13.
@@ -84,12 +85,22 @@ public class Ball {
 			switch(collisionSide)
 			{
 				case Brick.SIDE_BOTTOM:
+					Log.d("Collision", "bottom " + xPosition + " " + yPosition);
+					yDirection *= -1.0;
+					break;
+					
 				case Brick.SIDE_TOP:
+					Log.d("Collision", "top " + xPosition + " " + yPosition + " Brick: " + bricks.get(i).xPosition + ", " +  bricks.get(i).yPosition);
 					yDirection *= -1.0;
 					break;
 				
 				case Brick.SIDE_RIGHT:
+					Log.d("Collision", "right " + xPosition + " " + yPosition);
+					xDirection *= -1.0;
+					break;
+					
 				case Brick.SIDE_LEFT:
+					Log.d("Collision", "left " + xPosition + " " + yPosition);
 					xDirection *= -1.0;
 					break;
 			

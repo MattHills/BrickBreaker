@@ -18,6 +18,7 @@ public class Brick
 	int yPosition;
 	int brickWidth;
 	int brickHeight;
+	Rect rect;
 	
     int colour;
     int hitsRequired;
@@ -33,41 +34,50 @@ public class Brick
 		this.colour = colour;
 		this.hitsRequired = hitsRequired;
 		hitsTaken = 0;
+		
+		rect = new Rect(0, 0, brickWidth, brickHeight);
+    	rect.offset(xPosition, yPosition);
     }
     
     public Rect getRect()
     {
-    	return new Rect(xPosition, yPosition, yPosition + brickWidth, xPosition + brickHeight);
+    	return rect;
     }
     
     public int checkCollision(int ballPositionX, int ballPositionY, float ballRadius)
     {
-    	/* top and bottom collision */
-    	
-    	//if the ball is within the width of the brick
-    	if(ballPositionX >= xPosition && ballPositionX <= xPosition + brickWidth)
-    	{
-    		//collision with top
-    		if(ballPositionY >= yPosition)
-    			return Brick.SIDE_TOP;
-    		
-    		//collision with bottom
-    		if(ballPositionY <= yPosition + brickHeight)
-    			return Brick.SIDE_BOTTOM;
-    	}
-    	
-    	//if the ball is within the height of the brick
-    	if(ballPositionY >= yPosition && ballPositionY <= yPosition + brickHeight)
-    	{
-    		//collision with left
-    		if(ballPositionX >= xPosition)
-    			return Brick.SIDE_LEFT;
-    		
-    		//collision with right
-    		if(ballPositionY <= xPosition + brickWidth)
-    			return Brick.SIDE_RIGHT;
-    	}
-    	
+    	//top and bottom detection
+		if(ballPositionX >= rect.left && ballPositionX <= rect.right)
+		{
+			if(ballPositionY >= rect.bottom)
+			{
+				System.out.println("Collision bottom");
+				return Brick.SIDE_BOTTOM;
+			}
+
+			if(ballPositionY <= rect.top)
+			{
+				System.out.println("Collision top");
+				return Brick.SIDE_TOP;
+			}
+		}
+		
+		//left and right detection
+		if(ballPositionY >= rect.bottom && ballPositionY <= rect.top)
+		{
+			if(ballPositionX >= rect.left)
+			{
+				System.out.println("Collision left");
+				return Brick.SIDE_LEFT;
+			}
+
+			if(ballPositionX <= rect.right)
+			{
+				System.out.println("Collision right");
+				return Brick.SIDE_RIGHT;
+			}
+		}
+		
     	return 0;
     }
 }
