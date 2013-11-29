@@ -79,7 +79,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 	ball = new Ball(ballRadius);
 	bar = new Bar();
-	bar.setPosition(panelWidth / 2, panelHeight / 8);
+	bar.setPosition(panelWidth / 2, panelHeight / 10);
+	bar.initialize(panelWidth, panelHeight);
+	ball.initialize(panelWidth, panelHeight);
     }
 
     @Override
@@ -138,8 +140,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    ball.updatePosition(bricks);
 	    bar.updatePosition();
 	} else {
-	    bar.initialize(panelWidth, panelHeight);
-	    ball.initialize(panelWidth, panelHeight);
+
 	}
 
 	// draw ball
@@ -161,24 +162,26 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void updateAccelerometer(float x) {
 
-	barPos.x += x;
-	// Log.w("positions", barPos.x + " " + x);
-	if ((barPos.x + bar.barWidth / 2) > panelWidth)
-	    barPos.x = panelWidth;
+	if (bar != null) {
+	    barPos.x += x;
+	    // Log.w("positions", barPos.x + " " + x);
+	    if ((barPos.x + bar.barWidth / 2) > panelWidth)
+		barPos.x = panelWidth;
 
-	if ((barPos.x - bar.barWidth / 2) < -panelWidth)
-	    barPos.x = bar.barWidth / 2;
+	    if ((barPos.x - bar.barWidth / 2) < -panelWidth)
+		barPos.x = bar.barWidth / 2;
 
-	// update ball class instance
-	bar.xPosition = barPos.x;
-	bar.yPosition = barPos.y;
-	/**
-	 * Remove 1 or 2 axis that are not needed, needs to be implemented with
-	 * a real device. Will have to pass the values to bar as well
-	 */
+	    // update ball class instance
+	    bar.xPosition = barPos.x;
+	    bar.yPosition = barPos.y;
+	    /**
+	     * Remove 1 or 2 axis that are not needed, needs to be implemented
+	     * with a real device. Will have to pass the values to bar as well
+	     */
 
-	if (gameRunning) {
-	    bar.updatePosition();
+	    if (gameRunning) {
+		bar.updatePosition();
+	    }
 	}
     }
 

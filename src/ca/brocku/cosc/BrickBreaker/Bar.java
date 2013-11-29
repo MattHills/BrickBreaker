@@ -32,11 +32,12 @@ public class Bar {
 	this.panelWidth = panelWidth;
 	this.panelHeight = panelHeight;
 	barWidth = (panelWidth / 5);
-	barHeight = panelHeight / 35;
+	barHeight = panelHeight / 40;
 	barCenter = barWidth / 2;
 
-	rect = new Rect((int) xPosition, (int) yPosition,
-		(int) (xPosition + barWidth), (int) (yPosition + barHeight));
+	rect = new Rect((int) xPosition - barWidth / 2,
+		(int) (panelHeight - 100 - barHeight),
+		(int) (xPosition + barWidth / 2), (int) (panelHeight - 100));
 
 	// rect = new Rect((panelWidth / 2) - barCenter,
 	// (int) (panelHeight - 140 + GamePanel.ballRadius),
@@ -45,7 +46,7 @@ public class Bar {
     }
 
     public void updatePosition() {
-	rect.offset((int) xPosition, (int) yPosition);
+	rect.offset((int) xPosition, 0);
     }
 
     public Rect getRect() {
