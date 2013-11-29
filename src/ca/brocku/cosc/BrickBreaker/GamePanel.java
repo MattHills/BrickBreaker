@@ -59,45 +59,51 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void initializePanel(Canvas canvas) {
 
-	panelWidth = size.x;
-	panelHeight = size.y;
-	// panelWidth = canvas.getWidth();
-	// panelHeight = canvas.getHeight();
-	brickWidth = panelWidth / 6;
-	brickHeight = panelHeight / 30;
-	brickPadding = panelWidth / 18;
-
-	ballRadius = panelHeight / 100;
-
-	loadLevel();
+		panelWidth = size.x;
+		panelHeight = size.y;
+		// panelWidth = canvas.getWidth();
+		// panelHeight = canvas.getHeight();
+		brickWidth = panelWidth / 6;
+		brickHeight = panelHeight / 30;
+		brickPadding = panelWidth / 18;
+	
+		ballRadius = panelHeight / 100;
+	
+		loadLevel();
     }
 
     private void loadLevel() {
-	gameRunning = false;
-	lives = STARTING_LIVES;
-
-	bricks = new ArrayList<Brick>();
-
-	Brick b = new Brick(20, 20, brickWidth, brickHeight, Color.CYAN, 2);
-	bricks.add(b);
-	b = new Brick(50, 50, brickWidth, brickHeight, Color.GREEN, 2);
-	bricks.add(b);
-	b = new Brick(200, 120, brickWidth, brickHeight, Color.GREEN, 2);
-	bricks.add(b);
-	b = new Brick(250, 180, brickWidth, brickHeight, Color.GREEN, 2);
-	bricks.add(b);
-	b = new Brick(360, 180, brickWidth, brickHeight, Color.GREEN, 2);
-	bricks.add(b);
-	b = new Brick(250, 350, brickWidth, brickHeight, Color.GREEN, 2);
-	bricks.add(b);
-	b = new Brick(360, 450, brickWidth, brickHeight, Color.GREEN, 2);
-	bricks.add(b);
-
-	ball = new Ball(ballRadius);
-	ball.initialize(panelWidth, panelHeight);
-
-	bar = new Bar();
-	resetBar();
+		gameRunning = false;
+		lives = STARTING_LIVES;
+	
+		bricks = new ArrayList<Brick>();
+	
+		Brick b = new Brick(20, 20, brickWidth, brickHeight, Color.CYAN, 2);
+		bricks.add(b);
+		b = new Brick(50, 50, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new Brick(200, 120, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new Brick(240, 130, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		
+		b = new Brick(250, 180, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new Brick(360, 180, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new Brick(250, 350, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		b = new Brick(360, 450, brickWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+		
+		b = new Brick(0, 500, panelWidth, brickHeight, Color.GREEN, 2);
+		bricks.add(b);
+	
+		ball = new Ball(ballRadius);
+		ball.initialize(panelWidth, panelHeight);
+	
+		bar = new Bar();
+		resetBar();
     }
 
     @Override

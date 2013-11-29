@@ -78,8 +78,8 @@ public class Ball {
 
 	/* Collision with bricks */
 	for (int i = 0; i < bricks.size(); i++) {
-	    int collisionSide = bricks.get(i).checkCollision(xPosition,
-		    yPosition, radius);
+		System.out.println("s");
+	    int collisionSide = bricks.get(i).checkCollision(this);
 
 	    switch (collisionSide) {
 	    case Brick.SIDE_BOTTOM:

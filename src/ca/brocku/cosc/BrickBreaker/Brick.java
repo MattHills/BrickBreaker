@@ -42,33 +42,26 @@ public class Brick {
 	return rect;
     }
 
-    public int checkCollision(int ballPositionX, int ballPositionY,
-	    float ballRadius) {
-	// top and bottom detection
-	if (ballPositionX >= rect.left && ballPositionX <= rect.right) {
-	    if (ballPositionY >= rect.bottom) {
-		// System.out.println("Collision bottom");
-		// return Brick.SIDE_BOTTOM;
-	    }
+    public int checkCollision(Ball ball) {
+    	System.out.println("collision check");
+    	
+		// top and bottom detection
+		if (ball.xPosition + ball.radius >= rect.left && ball.xPosition - ball.radius <= rect.right) {
+		    if (ball.yPosition + ball.radius >= rect.bottom && ball.yPosition - ball.radius <= rect.top) {
+		    	//ball.setPosition(ball.xPosition, (int)(rect.bottom - ball.radius));
+				System.out.println("Collision bottom");
+				return Brick.SIDE_BOTTOM;
+		    }
+		}
 
-	    if (ballPositionY <= rect.top) {
-		// System.out.println("Collision top");
-		// return Brick.SIDE_TOP;
-	    }
-	}
-
-	// left and right detection
-	if (ballPositionY >= rect.bottom && ballPositionY <= rect.top) {
-	    if (ballPositionX >= rect.left) {
-		// System.out.println("Collision left");
-		// return Brick.SIDE_LEFT;
-	    }
-
-	    if (ballPositionX <= rect.right) {
-		// System.out.println("Collision right");
-		// return Brick.SIDE_RIGHT;
-	    }
-	}
+		// left and right detection
+		if (ball.yPosition + ball.radius >= rect.bottom && ball.yPosition - ball.radius <= rect.top) {
+		    if (ball.xPosition + ball.radius >= rect.left && ball.xPosition - ball.radius <= rect.right) {
+		    	//ball.setPosition((int)(rect.left - ball.radius), ball.yPosition);
+				System.out.println("Collision left");
+				return Brick.SIDE_LEFT;
+		    }
+		}
 
 	return 0;
     }
