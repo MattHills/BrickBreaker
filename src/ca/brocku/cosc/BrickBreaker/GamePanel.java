@@ -12,7 +12,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.TextView;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     // constants
@@ -23,9 +22,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Ball ball;
     private Bar bar;
     private Point size;
-    private TextView livesView;
-    private TextView scoreView;
-    private Canvas canvas;
 
     // game options
     int panelWidth;
@@ -61,7 +57,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	antiAliasPaint.setColor(Colour.BALL_COLOUR);
 
 	lives = STARTING_LIVES;
-	barLines = 1;
+	barLines = 0;
 	gameLevel = 0;
 
 	barPos = new android.graphics.PointF();
@@ -75,7 +71,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public void initializePanel(Canvas canvas) {
 
-	this.canvas = canvas;
 	panelWidth = size.x;
 	panelHeight = size.y;
 
@@ -93,6 +88,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	int numBricks, brickMaxW, hitsReq;
 
 	gameLevel++;
+	if (barLines < 8) {
+	    barLines++;
+	}
 	bricks = new ArrayList<Brick>();
 
 	Brick b;
@@ -101,8 +99,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    brickMaxW = panelWidth / numBricks - brickPadding;
 	    for (int j = brickPadding / 2; j < panelWidth - brickMaxW; j++) {
 		hitsReq = 1 + (int) (Math.random() * ((gameLevel - 1) + 1));
-		b = new Brick(j, i * brickHeight, brickMaxW, brickHeight,
-			getRandomColour(), hitsReq);
+		b = new Brick(j, i * brickHeight + brickPadding, brickMaxW,
+			brickHeight, getRandomColour(), hitsReq);
 		bricks.add(b);
 		j += brickMaxW + brickPadding;
 	    }
