@@ -34,6 +34,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     int brickHeight;
     int brickPadding;
     int prevX;
+    int barLines;
+    int gameLevel;
 
     android.graphics.PointF barPos;
     public static float ballRadius;
@@ -58,6 +60,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	antiAliasPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 	antiAliasPaint.setColor(Colour.BALL_COLOUR);
 
+	lives = STARTING_LIVES;
+	barLines = 1;
+	gameLevel = 0;
+
 	barPos = new android.graphics.PointF();
 	barPos.x = 0;
 	barPos.y = 0;
@@ -72,9 +78,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	this.canvas = canvas;
 	panelWidth = size.x;
 	panelHeight = size.y;
-	// panelWidth = canvas.getWidth();
-	// panelHeight = canvas.getHeight();
-	brickWidth = panelWidth / 6;
+
+	// brickWidth = panelWidth / 6;
 	brickHeight = panelHeight / 30;
 	brickPadding = panelWidth / 18;
 
@@ -85,25 +90,40 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     private void loadLevel() {
 	gameRunning = false;
-	lives = STARTING_LIVES;
+	int numBricks, brickMaxW, hitsReq;
 
+	gameLevel++;
 	bricks = new ArrayList<Brick>();
 
-	Brick b = new Brick(20, 20, brickWidth, brickHeight, Colour.BLUE1, 2);
-	bricks.add(b);
-	b = new Brick(50, 50, brickWidth, brickHeight, Colour.BLUE2, 2);
-	bricks.add(b);
-	b = new Brick(200, 120, brickWidth, brickHeight, Colour.GREEN1, 2);
-	bricks.add(b);
-	b = new Brick(240, 130, brickWidth, brickHeight, Colour.ORANGE, 2);
-	bricks.add(b);
+	Brick b;
+	for (int i = 0; i < barLines; i++) {
+	    numBricks = 1 + (int) (Math.random() * ((5 - 1) + 1));
+	    brickMaxW = panelWidth / numBricks - brickPadding;
+	    for (int j = brickPadding / 2; j < panelWidth - brickMaxW; j++) {
+		hitsReq = 1 + (int) (Math.random() * ((gameLevel - 1) + 1));
+		b = new Brick(j, i * brickHeight, brickMaxW, brickHeight,
+			getRandomColour(), hitsReq);
+		bricks.add(b);
+		j += brickMaxW + brickPadding;
+	    }
+	}
 
-	b = new Brick(360, 180, brickWidth, brickHeight, Colour.PURPLE, 2);
-	bricks.add(b);
-	b = new Brick(250, 350, brickWidth, brickHeight, Colour.RED, 2);
-	bricks.add(b);
-	b = new Brick(360, 450, brickWidth, brickHeight, Colour.YELLOW, 2);
-	bricks.add(b);
+	// Brick b = new Brick(20, 20, brickWidth, brickHeight, Colour.BLUE1,
+	// 2);
+	// bricks.add(b);
+	// b = new Brick(50, 50, brickWidth, brickHeight, Colour.BLUE2, 2);
+	// bricks.add(b);
+	// b = new Brick(200, 120, brickWidth, brickHeight, Colour.GREEN1, 2);
+	// bricks.add(b);
+	// b = new Brick(240, 130, brickWidth, brickHeight, Colour.ORANGE, 2);
+	// bricks.add(b);
+	//
+	// b = new Brick(360, 180, brickWidth, brickHeight, Colour.PURPLE, 2);
+	// bricks.add(b);
+	// b = new Brick(250, 350, brickWidth, brickHeight, Colour.RED, 2);
+	// bricks.add(b);
+	// b = new Brick(360, 450, brickWidth, brickHeight, Colour.YELLOW, 2);
+	// bricks.add(b);
 
 	ball = new Ball(ballRadius);
 	ball.initialize(panelWidth, panelHeight);
@@ -111,6 +131,31 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	bar = new Bar();
 	resetBar();
 
+    }
+
+    private int[] getRandomColour() {
+	int index = 0 + (int) (Math.random() * ((8 - 0) + 1));
+
+	switch (index) {
+	case 0:
+	    return Colour.BLUE1;
+	case 1:
+	    return Colour.BLUE2;
+	case 2:
+	    return Colour.GREEN1;
+	case 3:
+	    return Colour.GREEN2;
+	case 4:
+	    return Colour.ORANGE;
+	case 5:
+	    return Colour.PURPLE;
+	case 6:
+	    return Colour.RED;
+	case 7:
+	    return Colour.YELLOW;
+	default:
+	    return Colour.BLACK;
+	}
     }
 
     @Override
@@ -162,9 +207,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		resetBar();
 
 		// commented out for testing
-		// lives--;
+		lives--;
 	    } else {
-		// end game
+		loadLevel();
 	    }
 	}
 
@@ -183,7 +228,12 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	if (gameRunning) {
-	    ball.updatePosition(bricks, bar);
+	    int brickHit = 0;
+	    brickHit = ball.updatePosition(bricks, bar);
+	    if (brickHit != 0) {
+		score += 10;
+
+	    }
 	    bar.updatePosition();
 	} else {
 

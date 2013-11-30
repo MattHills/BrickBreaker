@@ -52,10 +52,10 @@ public class Ball {
 	setPosition(canvasWidth / 2, canvasHeight - 140);
     }
 
-    public void updatePosition(List<Brick> bricks, Bar bar) {
+    public int updatePosition(List<Brick> bricks, Bar bar) {
 	xPosition += speed * xDirection;
 	yPosition += speed * yDirection;
-	int collisionSide;
+	int collisionSide, ret = 0;
 
 	/* Collision with walls and bottom of screen */
 	if (xPosition >= (canvasWidth - radius)) {
@@ -82,10 +82,12 @@ public class Ball {
 	    switch (collisionSide) {
 	    case Brick.TOP_BOTTOM:
 		yDirection *= -1.0;
+		ret = 1;
 		break;
 
 	    case Brick.LEFT_RIGHT:
 		xDirection *= -1.0;
+		ret = 1;
 		break;
 	    default:
 		break;
@@ -106,5 +108,6 @@ public class Ball {
 	default:
 	    break;
 	}
+	return ret;
     }
 }
