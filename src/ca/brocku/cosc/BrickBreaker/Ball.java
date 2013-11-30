@@ -78,35 +78,19 @@ public class Ball {
 
 	/* Collision with bricks */
 	for (int i = 0; i < bricks.size(); i++) {
-		System.out.println("s");
-	    int collisionSide = bricks.get(i).checkCollision(this);
+
+	    int collisionSide = bricks.get(i).checkCollision(xPosition, yPosition, radius);
 
 	    switch (collisionSide) {
-	    case Brick.SIDE_BOTTOM:
-		// Log.d("Collision", "bottom " + xPosition + " " + yPosition);
+	    case Brick.TOP_BOTTOM:
 		yDirection *= -1.0;
 		break;
 
-	    case Brick.SIDE_TOP:
-		// Log.d("Collision",
-		// "top " + xPosition + " " + yPosition + " Brick: "
-		// + bricks.get(i).xPosition + ", "
-		// + bricks.get(i).yPosition);
-		yDirection *= -1.0;
-		break;
-
-	    case Brick.SIDE_RIGHT:
-		// Log.d("Collision", "right " + xPosition + " " + yPosition);
+	    case Brick.LEFT_RIGHT:
 		xDirection *= -1.0;
 		break;
-
-	    case Brick.SIDE_LEFT:
-		// Log.d("Collision", "left " + xPosition + " " + yPosition);
-		xDirection *= -1.0;
-		break;
-
-	    default:
-		break;
+			default:
+				break;
 	    }
 	}
 

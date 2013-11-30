@@ -7,10 +7,8 @@ import android.graphics.Rect;
  */
 public class Brick {
 
-    public static final int SIDE_TOP = 1;
-    public static final int SIDE_LEFT = 2;
-    public static final int SIDE_RIGHT = 3;
-    public static final int SIDE_BOTTOM = 4;
+    public static final int TOP_BOTTOM = 1;
+    public static final int LEFT_RIGHT = 2;
 
     // position and size
     int xPosition;
@@ -42,27 +40,31 @@ public class Brick {
 	return rect;
     }
 
-    public int checkCollision(Ball ball) {
-    	System.out.println("collision check");
-    	
+    public int checkCollision(int xPosition, int yPosition, float radius) {
+    	System.out.println(xPosition + "  "+ yPosition);
 		// top and bottom detection
-		if (ball.xPosition + ball.radius >= rect.left && ball.xPosition - ball.radius <= rect.right) {
-		    if (ball.yPosition + ball.radius >= rect.bottom && ball.yPosition - ball.radius <= rect.top) {
+		if (xPosition + radius >= rect.left && xPosition - radius <= rect.right) {
+		    if (yPosition - radius <= rect.bottom && yPosition + radius >= rect.top) {
 		    	//ball.setPosition(ball.xPosition, (int)(rect.bottom - ball.radius));
-				System.out.println("Collision bottom");
-				return Brick.SIDE_BOTTOM;
+		    	onCollision();
+				return Brick.TOP_BOTTOM;
 		    }
 		}
 
 		// left and right detection
-		if (ball.yPosition + ball.radius >= rect.bottom && ball.yPosition - ball.radius <= rect.top) {
-		    if (ball.xPosition + ball.radius >= rect.left && ball.xPosition - ball.radius <= rect.right) {
+		if (yPosition + radius >= rect.bottom && yPosition - radius <= rect.top) {
+		    if (xPosition - radius <= rect.left && xPosition + radius >= rect.right) {
 		    	//ball.setPosition((int)(rect.left - ball.radius), ball.yPosition);
-				System.out.println("Collision left");
-				return Brick.SIDE_LEFT;
+		    	onCollision();
+				return Brick.LEFT_RIGHT;
 		    }
 		}
 
-	return 0;
+		return 0;
+    }
+    
+    private void onCollision()
+    {
+    	//do something on collision
     }
 }

@@ -87,8 +87,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		b = new Brick(240, 130, brickWidth, brickHeight, Color.GREEN, 2);
 		bricks.add(b);
 		
-		b = new Brick(250, 180, brickWidth, brickHeight, Color.GREEN, 2);
-		bricks.add(b);
 		b = new Brick(360, 180, brickWidth, brickHeight, Color.GREEN, 2);
 		bricks.add(b);
 		b = new Brick(250, 350, brickWidth, brickHeight, Color.GREEN, 2);
@@ -96,8 +94,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		b = new Brick(360, 450, brickWidth, brickHeight, Color.GREEN, 2);
 		bricks.add(b);
 		
-		b = new Brick(0, 500, panelWidth, brickHeight, Color.GREEN, 2);
-		bricks.add(b);
 	
 		ball = new Ball(ballRadius);
 		ball.initialize(panelWidth, panelHeight);
