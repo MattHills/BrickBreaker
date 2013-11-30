@@ -23,15 +23,13 @@ public class Ball {
     int canvasHeight;
     int canvasWidth;
 
-    public static final int BALL_COLOUR = Color.LTGRAY;
-
     public Ball(float radius) {
 	this.radius = radius;
 
 	initialized = false;
 	isAlive = true;
 
-	speed = 2;
+	speed = 4;
 	xDirection = -3;
 	yDirection = -3;
     }

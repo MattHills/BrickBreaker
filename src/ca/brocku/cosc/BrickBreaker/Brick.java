@@ -17,31 +17,30 @@ public class Brick {
     int brickHeight;
     Rect rect;
 
-    int colour;
+    int[] colour;
     int hitsRequired;
     int hitsTaken;
 
     public Brick(int xPosition, int yPosition, int brickWidth, int brickHeight,
-	    int colour, int hitsRequired) {
+	    int[] colour, int hitsRequired) {
 
-	this.xPosition = xPosition;
-	this.yPosition = yPosition;
-	this.brickWidth = brickWidth;
-	this.brickHeight = brickHeight;
-	this.colour = colour;
-	this.hitsRequired = hitsRequired;
-	hitsTaken = 0;
-
-	rect = new Rect(0, 0, brickWidth, brickHeight);
-	rect.offset(xPosition, yPosition);
+		this.xPosition = xPosition;
+		this.yPosition = yPosition;
+		this.brickWidth = brickWidth;
+		this.brickHeight = brickHeight;
+		this.colour = colour;
+		this.hitsRequired = hitsRequired;
+		hitsTaken = 0;
+	
+		rect = new Rect(0, 0, brickWidth, brickHeight);
+		rect.offset(xPosition, yPosition);
     }
 
     public Rect getRect() {
-	return rect;
+    	return rect;
     }
 
     public int checkCollision(int xPosition, int yPosition, float radius) {
-    	System.out.println(xPosition + "  "+ yPosition);
 		// top and bottom detection
 		if (xPosition + radius >= rect.left && xPosition - radius <= rect.right) {
 		    if (yPosition - radius <= rect.bottom && yPosition + radius >= rect.top) {
@@ -65,6 +64,11 @@ public class Brick {
     
     private void onCollision()
     {
-    	//do something on collision
+    	hitsTaken++;
+    }
+    
+    public int getColour()
+    {
+    	return colour[(hitsRequired - 1) - hitsTaken];
     }
 }
