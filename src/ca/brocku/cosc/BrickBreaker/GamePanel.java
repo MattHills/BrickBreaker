@@ -12,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     // constants
@@ -22,6 +23,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Ball ball;
     private Bar bar;
     private Point size;
+    private TextView livesView;
+    private TextView scoreView;
+    private Canvas canvas;
 
     // game options
     int panelWidth;
@@ -46,66 +50,67 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     Paint antiAliasPaint;
 
     public GamePanel(Context context, Point size) {
-		super(context);
-		this.size = size;
-		
-		paint = new Paint();
-		antiAliasPaint = new Paint();
-		antiAliasPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		antiAliasPaint.setColor(Colour.BALL_COLOUR);
-	
-		barPos = new android.graphics.PointF();
-		barPos.x = 0;
-		barPos.y = 0;
-		getHolder().addCallback(this);
-		gameThread = new GameThread(getHolder(), this);
-	
-		setFocusable(true);
+	super(context);
+	this.size = size;
+
+	paint = new Paint();
+	antiAliasPaint = new Paint();
+	antiAliasPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+	antiAliasPaint.setColor(Colour.BALL_COLOUR);
+
+	barPos = new android.graphics.PointF();
+	barPos.x = 0;
+	barPos.y = 0;
+	getHolder().addCallback(this);
+	gameThread = new GameThread(getHolder(), this);
+
+	setFocusable(true);
     }
 
     public void initializePanel(Canvas canvas) {
 
-		panelWidth = size.x;
-		panelHeight = size.y;
-		// panelWidth = canvas.getWidth();
-		// panelHeight = canvas.getHeight();
-		brickWidth = panelWidth / 6;
-		brickHeight = panelHeight / 30;
-		brickPadding = panelWidth / 18;
-	
-		ballRadius = panelHeight / 100;
-	
-		loadLevel();
+	this.canvas = canvas;
+	panelWidth = size.x;
+	panelHeight = size.y;
+	// panelWidth = canvas.getWidth();
+	// panelHeight = canvas.getHeight();
+	brickWidth = panelWidth / 6;
+	brickHeight = panelHeight / 30;
+	brickPadding = panelWidth / 18;
+
+	ballRadius = panelHeight / 100;
+
+	loadLevel();
     }
 
     private void loadLevel() {
-		gameRunning = false;
-		lives = STARTING_LIVES;
-	
-		bricks = new ArrayList<Brick>();
-	
-		Brick b = new Brick(20, 20, brickWidth, brickHeight, Colour.BLUE1, 2);
-		bricks.add(b);
-		b = new Brick(50, 50, brickWidth, brickHeight, Colour.BLUE2, 2);
-		bricks.add(b);
-		b = new Brick(200, 120, brickWidth, brickHeight, Colour.GREEN1, 2);
-		bricks.add(b);
-		b = new Brick(240, 130, brickWidth, brickHeight, Colour.ORANGE, 2);
-		bricks.add(b);
-		
-		b = new Brick(360, 180, brickWidth, brickHeight,Colour.PURPLE, 2);
-		bricks.add(b);
-		b = new Brick(250, 350, brickWidth, brickHeight, Colour.RED, 2);
-		bricks.add(b);
-		b = new Brick(360, 450, brickWidth, brickHeight, Colour.YELLOW, 2);
-		bricks.add(b);
-		
-	
-		ball = new Ball(ballRadius);
-		ball.initialize(panelWidth, panelHeight);
-	
-		bar = new Bar();
-		resetBar();
+	gameRunning = false;
+	lives = STARTING_LIVES;
+
+	bricks = new ArrayList<Brick>();
+
+	Brick b = new Brick(20, 20, brickWidth, brickHeight, Colour.BLUE1, 2);
+	bricks.add(b);
+	b = new Brick(50, 50, brickWidth, brickHeight, Colour.BLUE2, 2);
+	bricks.add(b);
+	b = new Brick(200, 120, brickWidth, brickHeight, Colour.GREEN1, 2);
+	bricks.add(b);
+	b = new Brick(240, 130, brickWidth, brickHeight, Colour.ORANGE, 2);
+	bricks.add(b);
+
+	b = new Brick(360, 180, brickWidth, brickHeight, Colour.PURPLE, 2);
+	bricks.add(b);
+	b = new Brick(250, 350, brickWidth, brickHeight, Colour.RED, 2);
+	bricks.add(b);
+	b = new Brick(360, 450, brickWidth, brickHeight, Colour.YELLOW, 2);
+	bricks.add(b);
+
+	ball = new Ball(ballRadius);
+	ball.initialize(panelWidth, panelHeight);
+
+	bar = new Bar();
+	resetBar();
+
     }
 
     @Override
@@ -147,48 +152,56 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 	if (!ball.isAlive) {
 	    if (lives > 0) {
-			ball = new Ball(ballRadius);
-			ball.initialize(panelWidth, panelHeight);
-			ball.initialize(panelWidth, panelHeight);
-			barPos.x = 0;
-			prevX = 0;
-			gameRunning = false;
-	
-			resetBar();
-	
-			// commented out for testing
-			// lives--;
+		ball = new Ball(ballRadius);
+		ball.initialize(panelWidth, panelHeight);
+		ball.initialize(panelWidth, panelHeight);
+		barPos.x = 0;
+		prevX = 0;
+		gameRunning = false;
+
+		resetBar();
+
+		// commented out for testing
+		// lives--;
 	    } else {
-	    	// end game
+		// end game
 	    }
 	}
 
 	// background color
 	canvas.drawColor(Color.DKGRAY);
-	
-	//check to see if any bricks are to be removed
-	for(int i = 0; i < bricks.size(); i++){
-		if(bricks.get(i).hitsRequired <= bricks.get(i).hitsTaken)
-			bricks.remove(i);
-	}		
 
-	for(int i = 0; i < bricks.size(); i++) {		
+	// check to see if any bricks are to be removed
+	for (int i = 0; i < bricks.size(); i++) {
+	    if (bricks.get(i).hitsRequired <= bricks.get(i).hitsTaken)
+		bricks.remove(i);
+	}
+
+	for (int i = 0; i < bricks.size(); i++) {
 	    paint.setColor(bricks.get(i).getColour());
 	    canvas.drawRect(bricks.get(i).getRect(), paint);
 	}
 
 	if (gameRunning) {
-	    ball.updatePosition(bricks);
+	    ball.updatePosition(bricks, bar);
 	    bar.updatePosition();
 	} else {
 
 	}
 
-		// draw ball
-		canvas.drawCircle(ball.xPosition, ball.yPosition, ball.radius, antiAliasPaint);
-	
-		// draw bar
-		canvas.drawRect(bar.getRect(), paint);
+	// draw ball
+	canvas.drawCircle(ball.xPosition, ball.yPosition, ball.radius,
+		antiAliasPaint);
+
+	// draw bar
+	canvas.drawRect(bar.getRect(), paint);
+
+	Paint text = new Paint();
+	text.setColor(Color.WHITE);
+	text.setTextSize(40);
+	canvas.drawText("Lives: " + lives, 0, panelHeight - 50, text);
+	canvas.drawText("Score: " + score, panelWidth - 300, panelHeight - 50,
+		text);
     }
 
     @Override

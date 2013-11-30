@@ -2,8 +2,6 @@ package ca.brocku.cosc.BrickBreaker;
 
 import java.util.List;
 
-import android.graphics.Color;
-
 /**
  * Created by dl08ti on 18/11/13.
  */
@@ -54,9 +52,10 @@ public class Ball {
 	setPosition(canvasWidth / 2, canvasHeight - 140);
     }
 
-    public void updatePosition(List<Brick> bricks) {
+    public void updatePosition(List<Brick> bricks, Bar bar) {
 	xPosition += speed * xDirection;
 	yPosition += speed * yDirection;
+	int collisionSide;
 
 	/* Collision with walls and bottom of screen */
 	if (xPosition >= (canvasWidth - radius)) {
@@ -77,7 +76,8 @@ public class Ball {
 	/* Collision with bricks */
 	for (int i = 0; i < bricks.size(); i++) {
 
-	    int collisionSide = bricks.get(i).checkCollision(xPosition, yPosition, radius);
+	    collisionSide = bricks.get(i).checkCollision(xPosition, yPosition,
+		    radius);
 
 	    switch (collisionSide) {
 	    case Brick.TOP_BOTTOM:
@@ -87,11 +87,24 @@ public class Ball {
 	    case Brick.LEFT_RIGHT:
 		xDirection *= -1.0;
 		break;
-			default:
-				break;
+	    default:
+		break;
 	    }
 	}
 
 	/* Collision with bar */
+	collisionSide = bar.checkCollision(xPosition, yPosition, radius);
+
+	switch (collisionSide) {
+	case Brick.TOP_BOTTOM:
+	    yDirection *= -1.0;
+	    break;
+
+	case Brick.LEFT_RIGHT:
+	    xDirection *= -1.0;
+	    break;
+	default:
+	    break;
+	}
     }
 }

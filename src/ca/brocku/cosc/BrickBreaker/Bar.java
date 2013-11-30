@@ -56,6 +56,30 @@ public class Bar {
 	}
     }
 
+    public int checkCollision(int xPosition, int yPosition, float radius) {
+	// top and bottom detection
+	if (xPosition + radius >= rect.left && xPosition - radius <= rect.right) {
+	    if (yPosition - radius <= rect.bottom
+		    && yPosition + radius >= rect.top) {
+		// ball.setPosition(ball.xPosition, (int)(rect.bottom -
+		// ball.radius));
+		return Brick.TOP_BOTTOM;
+	    }
+	}
+
+	// left and right detection
+	if (yPosition + radius >= rect.bottom && yPosition - radius <= rect.top) {
+	    if (xPosition - radius <= rect.left
+		    && xPosition + radius >= rect.right) {
+		// ball.setPosition((int)(rect.left - ball.radius),
+		// ball.yPosition);
+		return Brick.LEFT_RIGHT;
+	    }
+	}
+
+	return 0;
+    }
+
     public Rect getRect() {
 	return rect;
     }
