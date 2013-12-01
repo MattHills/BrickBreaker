@@ -242,6 +242,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		antiAliasPaint);
 
 	// draw bar
+	paint.setColor(Colour.BAR_COLOUR);
 	canvas.drawRect(bar.getRect(), paint);
 
 	Paint text = new Paint();

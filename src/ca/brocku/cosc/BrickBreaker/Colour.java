@@ -12,6 +12,7 @@ package ca.brocku.cosc.BrickBreaker;
 
 public class Colour {
     public static final int BALL_COLOUR = 0xffbadc47;
+    public static final int BAR_COLOUR = 0xffbcb69f;
 
     public static final int[] RED = { 0xffff0000, 0xffc60c12, 0xffa91415 };
 
