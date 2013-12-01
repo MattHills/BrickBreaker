@@ -88,7 +88,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	int numBricks, brickMaxW, hitsReq;
 
 	gameLevel++;
-	if (barLines < 8) {
+	if (barLines < 12) {
 	    barLines++;
 	}
 	bricks = new ArrayList<Brick>();
@@ -98,8 +98,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    numBricks = 1 + (int) (Math.random() * ((5 - 1) + 1));
 	    brickMaxW = panelWidth / numBricks - brickPadding;
 	    for (int j = brickPadding / 2; j < panelWidth - brickMaxW; j++) {
-		hitsReq = 1 + (int) (Math.random() * ((gameLevel - 1) + 1));
-		b = new Brick(j, i * brickHeight + brickPadding, brickMaxW,
+		hitsReq = 1 + (int) (Math.random() * ((3 - 1) + 1));
+		b = new Brick(j, i * brickHeight + 5 * i, brickMaxW,
 			brickHeight, getRandomColour(), hitsReq);
 		bricks.add(b);
 		j += brickMaxW + brickPadding;
@@ -132,7 +132,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     private int[] getRandomColour() {
-	int index = 0 + (int) (Math.random() * ((8 - 0) + 1));
+	int index = 0 + (int) (Math.random() * ((7 - 0) + 1));
 
 	switch (index) {
 	case 0:
@@ -152,7 +152,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	case 7:
 	    return Colour.YELLOW;
 	default:
-	    return Colour.BLACK;
+	    return Colour.BLUE1;
 	}
     }
 
@@ -242,7 +242,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		antiAliasPaint);
 
 	// draw bar
-	paint.setColor(Colour.BAR_COLOUR);
+	paint.setColor(Colour.BALL_COLOUR);
 	canvas.drawRect(bar.getRect(), paint);
 
 	Paint text = new Paint();
