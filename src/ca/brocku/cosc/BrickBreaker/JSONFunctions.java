@@ -3,55 +3,87 @@ package ca.brocku.cosc.BrickBreaker;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
-public class JSONFunctions extends AsyncTask<String, String, JSONObject> {
+public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
+    Score uploadScore;
 
     @Override
-    protected JSONObject doInBackground(String... urls) {
-	InputStream is = null;
-	String result = "";
-	JSONObject jArray = null;
+    protected JSONArray doInBackground(String... urls) {
 
+	ArrayList<NameValuePair> lbScores = new ArrayList<NameValuePair>();
+	String result;
+	JSONArray j = null;
 	try {
-	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httpost = new HttpPost(urls[0]);
-	    HttpResponse response = httpclient.execute(httpost);
-	    HttpEntity entity = response.getEntity();
-	    is = entity.getContent();
-	} catch (Exception e) {
-	    Log.e("log_tag", "Error in connection " + e.toString());
-	}
+	    if (uploadScore == null) {
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(
+			"http://brockcoscbrickbreakerleaderboard.web44.net/db_config.php");
+		httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
+		HttpResponse response = httpClient.execute(httpPost);
+		HttpEntity entity = response.getEntity();
+		InputStream is = entity.getContent();
 
-	try {
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(
-		    is, "iso-8859-1"), 8);
-	    StringBuilder sb = new StringBuilder();
-	    String line = null;
-	    while ((line = reader.readLine()) != null) {
-		sb.append(line + "\n");
+		BufferedReader reader = new BufferedReader(
+			new InputStreamReader(is, "iso-8859-1"), 8);
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+		    sb.append(line + "\n");
+		}
+		is.close();
+		result = sb.toString();
+
+		j = new JSONArray(result);
+		// for (int i = 0; i < j.length(); i++) {
+		// JSONObject o = j.getJSONObject(i);
+		// Score s = new Score();
+		// s.setName(o.get("name").toString());
+		// s.setScore(o.getInt("score"));
+		// }
+	    } else {
+		lbScores.add(new BasicNameValuePair("score", String
+			.valueOf(uploadScore.getScore())));
+		lbScores.add(new BasicNameValuePair("name", uploadScore
+			.getName()));
+
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost httpPost = new HttpPost(
+			"http://brockcoscbrickbreakerleaderboard.web44.net/db_insert.php");
+		httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
+		HttpResponse response = httpClient.execute(httpPost);
+		HttpEntity entity = response.getEntity();
+		InputStream is = entity.getContent();
+
+		BufferedReader reader = new BufferedReader(
+			new InputStreamReader(is, "iso-8859-1"), 8);
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+		    sb.append(line + "\n");
+		}
+		is.close();
+		result = sb.toString();
+
+		j = new JSONArray(result);
 	    }
-	    is.close();
-	    result = sb.toString();
-	} catch (Exception e) {
-	    Log.e("log_tag", "Error converting result " + e.toString());
-	}
-	try {
 
-	    jArray = new JSONObject(result);
-	} catch (JSONException e) {
-	    Log.e("log_tag", "Error parsing data " + e.toString());
+	} catch (Exception e) {
+	    e.printStackTrace();
 	}
-	return jArray;
+	return j;
+
     }
 }

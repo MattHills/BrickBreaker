@@ -8,8 +8,6 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.example.brickbreaker.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.brickbreaker.R;
 
 public class MainActivity extends Activity {
 
@@ -75,9 +74,9 @@ public class MainActivity extends Activity {
 	jsonFunctions = new JSONFunctions();
 	jsonFunctions
 		.execute("http://brockcoscbrickbreakerleaderboard.web44.net/");
-
-	MySQLHelper db = new MySQLHelper(this);
-
+	//
+	// MySQLHelper db = new MySQLHelper(this);
+	// db.getScores();
     }
 
     // Add custom menu buttons for the phones built in menu button
@@ -151,6 +150,7 @@ public class MainActivity extends Activity {
 	    // exists = false;
 	    // }
 	    if (exists) {
+		inputFile = new File(this.getFilesDir() + filename);
 		FileInputStream fis = new FileInputStream(inputFile);
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		contacts = (ArrayList<Score>) ois.readObject();
