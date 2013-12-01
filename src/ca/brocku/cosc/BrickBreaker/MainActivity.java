@@ -115,37 +115,6 @@ public class MainActivity extends Activity {
 
     }
 
-    @SuppressWarnings("unchecked")
-    private ArrayList<Score> readScores() {
-	ArrayList<Score> contacts = null;
-
-	try {
-	    File inputFile = null;
-	    boolean exists = (new File(this.getFilesDir() + filename).exists());
-	    // Create the file and directories if they do not exist
-	    if (exists) {
-		new File(this.getFilesDir() + filename).delete();
-		exists = false;
-	    }
-	    if (exists) {
-		FileInputStream fis = new FileInputStream(inputFile);
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		contacts = (ArrayList<Score>) ois.readObject();
-		ois.close();
-		fis.close();
-	    }
-	    if (!exists) {
-		scores = null;
-		saveHighScore();
-	    }
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-
-	return contacts;
-    }
-
     private void setName() {
 	SharedPreferences prefs = PreferenceManager
 		.getDefaultSharedPreferences(this);
@@ -166,6 +135,38 @@ public class MainActivity extends Activity {
 	    Score hs = scores.get(0);
 	    highScore.setText("High Score: " + hs.getScore());
 	}
+    }
+
+    @SuppressWarnings("unchecked")
+    private ArrayList<Score> readScores() {
+	ArrayList<Score> contacts = null;
+
+	try {
+	    File inputFile = null;
+	    boolean exists = (new File(this.getFilesDir() + filename).exists());
+	    // Create the file and directories if they do not exist
+	    // This is for debugging a from a new instal of the app
+	    // if (exists) {
+	    // new File(this.getFilesDir() + filename).delete();
+	    // exists = false;
+	    // }
+	    if (exists) {
+		FileInputStream fis = new FileInputStream(inputFile);
+		ObjectInputStream ois = new ObjectInputStream(fis);
+		contacts = (ArrayList<Score>) ois.readObject();
+		ois.close();
+		fis.close();
+	    }
+	    if (!exists) {
+		scores = null;
+		saveHighScore();
+	    }
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+
+	return contacts;
     }
 
     // Saving contacts to a file
