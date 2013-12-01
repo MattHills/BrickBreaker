@@ -3,7 +3,9 @@ package ca.brocku.cosc.BrickBreaker;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -207,7 +209,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		// commented out for testing
 		lives--;
 	    } else {
-		loadLevel();
+	    	Intent intent = new Intent(this.getContext(), GameOver.class);
+	    	this.getContext().startActivity(intent);
+	    	
+	    	loadLevel();
 	    }
 	}
 

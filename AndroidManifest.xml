@@ -28,6 +28,7 @@
             android:name="ca.brocku.cosc.BrickBreaker.BrickBreakerPreferencesActivity" 
             android:label="@string/preferences">
  		</activity>
+         <activity android:name="ca.brocku.cosc.BrickBreaker.GameOver"></activity>
     </application>
 
 </manifest>

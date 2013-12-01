@@ -31,12 +31,29 @@ public class Game extends Activity implements SensorEventListener {
 	gamePanel = new GamePanel(this, size);
 	setContentView(gamePanel);
 
-	sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+	
+    }
+    
+    
+    protected void onPause()
+    {
+    	super.onPause();
+    	
+    	/*
+    	 *	Stop sensors 
+    	 * 
+    	 */
+    }
+    
+    protected void onStart()
+    {
+    	super.onStart();
+    	sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-	// add listener. The listener will be HelloAndroid (this) class
-	sensorManager.registerListener(this,
-		sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-		SensorManager.SENSOR_DELAY_NORMAL);
+		// add listener. The listener will be HelloAndroid (this) class
+		sensorManager.registerListener(this,
+			sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+			SensorManager.SENSOR_DELAY_NORMAL);
 
     }
 
@@ -55,4 +72,6 @@ public class Game extends Activity implements SensorEventListener {
 	    // event.values[2]);
 	}
     }
+    
+    
 }
