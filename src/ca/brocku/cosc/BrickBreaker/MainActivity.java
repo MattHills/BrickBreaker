@@ -176,7 +176,8 @@ public class MainActivity extends Activity {
 	    boolean exists = (new File(this.getFilesDir() + filename).exists());
 	    // Create the file and directories if they do not exist
 	    if (!exists) {
-		new File(this.getFilesDir() + filename).mkdirs();
+		new File(this.getFilesDir() + "").mkdirs();
+		new File(this.getFilesDir() + filename);
 	    }
 	    // Saving the file
 	    os = new FileOutputStream(this.getFilesDir() + filename, false);
