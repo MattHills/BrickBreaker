@@ -26,10 +26,11 @@
         </activity>
         
         <activity android:name="ca.brocku.cosc.BrickBreaker.Game" android:noHistory="true"></activity>
+        <activity android:name="ca.brocku.cosc.BrickBreaker.Leaderboards"></activity>
          <activity   
             android:name="ca.brocku.cosc.BrickBreaker.BrickBreakerPreferencesActivity" 
             android:label="@string/preferences">
- 		</activity>
+ 		 </activity>
          
          <activity android:name="ca.brocku.cosc.BrickBreaker.GameOver"
              		android:label="@string/game_over" android:noHistory="true">

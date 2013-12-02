@@ -11,6 +11,7 @@ public final class R {
     public static final class array {
         public static final int entries_list_preference=0x7f050000;
         public static final int entryvalues_list_preference=0x7f050001;
+        public static final int search_array=0x7f050002;
     }
     public static final class attr {
     }
@@ -28,19 +29,26 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int HighScore=0x7f0a0003;
-        public static final int Leaderboards=0x7f0a0002;
-        public static final int QuickPlay=0x7f0a0001;
-        public static final int Username=0x7f0a0000;
-        public static final int listview_top_scores=0x7f0a0005;
-        public static final int menuSettings=0x7f0a0008;
-        public static final int menu_button=0x7f0a0007;
-        public static final int new_game=0x7f0a0006;
-        public static final int textview_top_scores=0x7f0a0004;
+        public static final int HighScore=0x7f0a0005;
+        public static final int Leaderboards=0x7f0a0004;
+        public static final int QuickPlay=0x7f0a0003;
+        public static final int Username=0x7f0a0002;
+        public static final int listView=0x7f0a0001;
+        public static final int listview_top_scores=0x7f0a0008;
+        public static final int menuSettings=0x7f0a000c;
+        public static final int menu_button=0x7f0a000a;
+        public static final int new_game=0x7f0a0009;
+        public static final int spinner1=0x7f0a0000;
+        public static final int standard_spinner_format=0x7f0a0006;
+        public static final int textview_top_scores=0x7f0a0007;
+        public static final int txtName=0x7f0a000b;
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
-        public static final int game_over=0x7f030001;
+        public static final int activity_leaderboards=0x7f030000;
+        public static final int activity_main=0x7f030001;
+        public static final int custom_spinner=0x7f030002;
+        public static final int game_over=0x7f030003;
+        public static final int listitems=0x7f030004;
     }
     public static final class menu {
         public static final int main=0x7f090000;
@@ -57,6 +65,7 @@ public final class R {
         public static final int login=0x7f070006;
         public static final int preferences=0x7f07000a;
         public static final int quick_play=0x7f070004;
+        public static final int search_prompt=0x7f07000f;
         public static final int select_game_difficulty=0x7f070009;
         public static final int settings=0x7f070007;
         public static final int title_activity_open_gl=0x7f070003;

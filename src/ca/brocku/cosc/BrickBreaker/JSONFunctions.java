@@ -14,18 +14,31 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 
 public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
-    Score uploadScore;
+    private Score uploadScore;
+    private JSONArray j;
+    private Handler handler;
+
+    public void setHandler(Handler handler) {
+	this.handler = handler;
+    }
+
+    public void setUploadScore(Score uploadScore) {
+	this.uploadScore = uploadScore;
+    }
 
     @Override
     protected JSONArray doInBackground(String... urls) {
 
 	ArrayList<NameValuePair> lbScores = new ArrayList<NameValuePair>();
 	String result;
-	JSONArray j = null;
+	j = null;
 	try {
 	    if (uploadScore == null) {
 		HttpClient httpClient = new DefaultHttpClient();
@@ -47,12 +60,7 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
 		result = sb.toString();
 
 		j = new JSONArray(result);
-		// for (int i = 0; i < j.length(); i++) {
-		// JSONObject o = j.getJSONObject(i);
-		// Score s = new Score();
-		// s.setName(o.get("name").toString());
-		// s.setScore(o.getInt("score"));
-		// }
+
 	    } else {
 		lbScores.add(new BasicNameValuePair("score", String
 			.valueOf(uploadScore.getScore())));
@@ -84,6 +92,26 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
 	    e.printStackTrace();
 	}
 	return j;
+
+    }
+
+    protected void onPostExecute(JSONArray result) {
+	ArrayList<Score> scores = new ArrayList<Score>();
+	try {
+	    for (int i = 0; i < result.length(); i++) {
+		JSONObject o = result.getJSONObject(i);
+		Score s = new Score();
+		s.setName(o.get("name").toString());
+		s.setScore(o.getInt("score"));
+		scores.add(s);
+	    }
+
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}
+	Message msg = new Message();
+	msg.obj = scores;
+	handler.sendMessage(msg);
 
     }
 }

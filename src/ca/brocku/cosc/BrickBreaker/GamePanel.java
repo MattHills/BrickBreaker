@@ -3,7 +3,6 @@ package ca.brocku.cosc.BrickBreaker;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -24,6 +23,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Ball ball;
     private Bar bar;
     private Point size;
+    private ArrayList<Score> globalScores;
 
     // game options
     int panelWidth;
@@ -50,50 +50,48 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     Paint antiAliasPaint;
     Paint textPaint;
 
-    public GamePanel(Context context, Point size) 
-    {
-		super(context);
-		this.size = size;
-	
-		//initialize Paint objects for drawing objects
-		paint = new Paint();
-		antiAliasPaint = new Paint();
-		antiAliasPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		antiAliasPaint.setColor(Colour.BALL_COLOUR);
-		textPaint = new Paint();
-		textPaint.setColor(Color.WHITE);
-		textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		textPaint.setTextSize(20);
-	
-		lives = STARTING_LIVES;
-		barLines = 0;
-		gameLevel = 0;
-	
-		barPos = new android.graphics.PointF();
-		barPos.x = 0;
-		barPos.y = 0;
-		getHolder().addCallback(this);
-		gameThread = new GameThread(getHolder(), this);
-	
-		setFocusable(true);
+    public GamePanel(Context context, Point size, ArrayList<Score> globalScores) {
+	super(context);
+	this.size = size;
+	this.globalScores = globalScores;
+
+	// initialize Paint objects for drawing objects
+	paint = new Paint();
+	antiAliasPaint = new Paint();
+	antiAliasPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+	antiAliasPaint.setColor(Colour.BALL_COLOUR);
+	textPaint = new Paint();
+	textPaint.setColor(Color.WHITE);
+	textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+	textPaint.setTextSize(20);
+
+	lives = STARTING_LIVES;
+	barLines = 0;
+	gameLevel = 0;
+
+	barPos = new android.graphics.PointF();
+	barPos.x = 0;
+	barPos.y = 0;
+	getHolder().addCallback(this);
+	gameThread = new GameThread(getHolder(), this);
+
+	setFocusable(true);
     }
 
-    public void initializePanel(Canvas canvas) 
-    {
-		panelWidth = size.x;
-		panelHeight = size.y;
-	
-		// brickWidth = panelWidth / 6;
-		brickHeight = panelHeight / 30;
-		brickPadding = panelWidth / 18;
-	
-		ballRadius = panelHeight / 100;
-	
-		loadLevel();
+    public void initializePanel(Canvas canvas) {
+	panelWidth = size.x;
+	panelHeight = size.y;
+
+	// brickWidth = panelWidth / 6;
+	brickHeight = panelHeight / 30;
+	brickPadding = panelWidth / 18;
+
+	ballRadius = panelHeight / 100;
+
+	loadLevel();
     }
 
-    private void loadLevel() 
-    {
+    private void loadLevel() {
 	gameRunning = false;
 	int numBricks, brickMaxW, hitsReq;
 
@@ -115,23 +113,6 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		j += brickMaxW + brickPadding;
 	    }
 	}
-
-//	 b = new Brick(20, 20, brickWidth, brickHeight, Colour.BLUE1,
-//	 1);
-//	 bricks.add(b);
-//	 b = new Brick(50, 50, brickWidth, brickHeight, Colour.BLUE2, 2);
-//	 bricks.add(b);
-//	 b = new Brick(200, 120, brickWidth, brickHeight, Colour.GREEN1, 2);
-//	 bricks.add(b);
-//	 b = new Brick(240, 130, brickWidth, brickHeight, Colour.ORANGE, 2);
-//	 bricks.add(b);
-//	
-//	 b = new Brick(360, 180, brickWidth, brickHeight, Colour.PURPLE, 1);
-//	 bricks.add(b);
-//	 b = new Brick(250, 350, brickWidth, brickHeight, Colour.RED, 2);
-//	 bricks.add(b);
-//	 b = new Brick(0, 450, brickWidth, brickHeight, Colour.YELLOW, 1);
-//	 bricks.add(b);
 
 	ball = new Ball(ballRadius);
 	ball.initialize(panelWidth, panelHeight);
@@ -202,79 +183,74 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void Draw(Canvas canvas) {
-    
-	    if(bricks.isEmpty())
-	    {
-	    	//user has beat level
-	    	loadLevel();
+
+	if (bricks.isEmpty()) {
+	    // user has beat level
+	    loadLevel();
+	}
+
+	// if user has lives check to see if ball is dead
+	if (lives > 0) {
+	    if (!ball.isAlive) {
+
+		ball = new Ball(ballRadius);
+		ball.initialize(panelWidth, panelHeight);
+		ball.initialize(panelWidth, panelHeight);
+		barPos.x = 0;
+		prevX = 0;
+		gameRunning = false;
+
+		resetBar();
+
+		lives--;
+
 	    }
-	    
-	    //if user has lives check to see if ball is dead
-	    if (lives > 0) 
-	    {
-	    	if(!ball.isAlive) 
-	    	{
-		    
-			ball = new Ball(ballRadius);
-			ball.initialize(panelWidth, panelHeight);
-			ball.initialize(panelWidth, panelHeight);
-			barPos.x = 0;
-			prevX = 0;
-			gameRunning = false;
-	
-			resetBar();
-	
-			lives--;
-			
-		    }
-	    	
-	    	drawObjects(canvas);
-	    }
-	    else 
-	    {
-	    	Intent intent = new Intent(this.getContext(), GameOver.class);
-	    	this.getContext().startActivity(intent);
-		}
+
+	    drawObjects(canvas);
+	} else {
+	    Intent intent = new Intent(this.getContext(), GameOver.class);
+	    intent.putExtra("globalScores", globalScores);
+	    this.getContext().startActivity(intent);
+	}
 
     }
-    
-    private void drawObjects(Canvas canvas)
-    {
-    	// background color
-    	canvas.drawColor(Color.DKGRAY);
 
-    	// check to see if any bricks are to be removed
-    	for (int i = 0; i < bricks.size(); i++) {
-    	    if (bricks.get(i).hitsRequired <= bricks.get(i).hitsTaken)
-    		bricks.remove(i);
-    	}
+    private void drawObjects(Canvas canvas) {
+	// background color
+	canvas.drawColor(Color.DKGRAY);
 
-    	for (int i = 0; i < bricks.size(); i++) {
-    	    paint.setColor(bricks.get(i).getColour());
-    	    canvas.drawRect(bricks.get(i).getRect(), paint);
-    	}
+	// check to see if any bricks are to be removed
+	for (int i = 0; i < bricks.size(); i++) {
+	    if (bricks.get(i).hitsRequired <= bricks.get(i).hitsTaken)
+		bricks.remove(i);
+	}
 
-    	if (gameRunning) {
-    	    int brickHit = 0;
-    	    brickHit = ball.updatePosition(bricks, bar);
-    	    if (brickHit != 0) {
-    		score += 10;
+	for (int i = 0; i < bricks.size(); i++) {
+	    paint.setColor(bricks.get(i).getColour());
+	    canvas.drawRect(bricks.get(i).getRect(), paint);
+	}
 
-    	    }
-    	    bar.updatePosition();
-    	}
+	if (gameRunning) {
+	    int brickHit = 0;
+	    brickHit = ball.updatePosition(bricks, bar);
+	    if (brickHit != 0) {
+		score += 10;
 
-    	// draw ball
-    	canvas.drawCircle(ball.xPosition, ball.yPosition, ball.radius,
-    		antiAliasPaint);
+	    }
+	    bar.updatePosition();
+	}
 
-    	// draw bar
-    	paint.setColor(Colour.BALL_COLOUR);
-    	canvas.drawRect(bar.getRect(), paint);
+	// draw ball
+	canvas.drawCircle(ball.xPosition, ball.yPosition, ball.radius,
+		antiAliasPaint);
 
-    	canvas.drawText("Lives: " + lives, 0, panelHeight - 50, textPaint);
-    	canvas.drawText("Score: " + score, panelWidth - 300, panelHeight - 50,
-    		textPaint);
+	// draw bar
+	paint.setColor(Colour.BALL_COLOUR);
+	canvas.drawRect(bar.getRect(), paint);
+
+	canvas.drawText("Lives: " + lives, 0, panelHeight - 50, textPaint);
+	canvas.drawText("Score: " + score, panelWidth - 300, panelHeight - 50,
+		textPaint);
     }
 
     @Override

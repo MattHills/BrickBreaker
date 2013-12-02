@@ -12,6 +12,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +32,7 @@ public class MainActivity extends Activity {
     JSONFunctions jsonFunctions;
 
     ArrayList<Score> scores;
+    ArrayList<Score> globalScores;
 
     private final String filename = "BrickBreakerLocalLeaderboard";
 
@@ -45,6 +48,7 @@ public class MainActivity extends Activity {
 	    @Override
 	    public void onClick(View v) {
 		Intent intent = new Intent(MainActivity.this, Game.class);
+		intent.putExtra("globalScores", globalScores);
 		startActivity(intent);
 	    }
 	});
@@ -54,7 +58,10 @@ public class MainActivity extends Activity {
 
 	    @Override
 	    public void onClick(View v) {
-		Intent intent = new Intent(MainActivity.this, Game.class);
+		Intent intent = new Intent(MainActivity.this,
+			Leaderboards.class);
+		intent.putExtra("localScores", scores);
+		intent.putExtra("globalScores", globalScores);
 		startActivity(intent);
 	    }
 	});
@@ -67,14 +74,36 @@ public class MainActivity extends Activity {
 
 	scores = readScores();
 
+	if (scores == null) {
+	    scores = new ArrayList<Score>();
+	}
+
+	sortScores(scores);
+
 	displayHighScore();
 
 	jsonFunctions = new JSONFunctions();
+	Handler handler = new Handler() {
+	    @Override
+	    public void handleMessage(Message msg) {
+		@SuppressWarnings("unchecked")
+		ArrayList<Score> s = (ArrayList<Score>) msg.obj;
+		globalScores = s;
+		sortScores(globalScores);
+	    }
+	};
+	jsonFunctions.setHandler(handler);
 	jsonFunctions
 		.execute("http://brockcoscbrickbreakerleaderboard.web44.net/");
+
 	//
-	// MySQLHelper db = new MySQLHelper(this);
+	MySQLHelper db = new MySQLHelper(this);
 	// db.getScores();
+    }
+
+    protected void sortScores(ArrayList<Score> globalScores2) {
+	// TODO Auto-generated method stub
+
     }
 
     // Add custom menu buttons for the phones built in menu button
@@ -106,7 +135,7 @@ public class MainActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	if (requestCode == 1) {
 	    if (resultCode == RESULT_OK) {
-	    	setName();
+		setName();
 	    }
 	}
 

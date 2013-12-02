@@ -16,5 +16,11 @@
     <string name="top_scores">Top Scores</string>
     <string name="button_new_game">New Game</string>
     <string name="button_main_menu">Main Menu</string>
+    <string name="search_prompt">Leaderboard Type</string>
+    
+    <string-array name="search_array">
+        <item>Local</item>
+        <item>Global</item>
+    </string-array>
 
 </resources>
