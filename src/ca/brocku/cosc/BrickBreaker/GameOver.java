@@ -67,10 +67,10 @@ public class GameOver extends Activity {
 
 	if (onlineLeaderboard) {
 	    adapter = new CustomListAdapter(this, R.layout.listitems,
-		    globalScores);
+		    globalScores, score);
 	} else {
 	    adapter = new CustomListAdapter(this, R.layout.listitems,
-		    localScores);
+		    localScores, score);
 	}
 
 	topScores.setAdapter(adapter);
@@ -89,6 +89,8 @@ public class GameOver extends Activity {
 	    public void onClick(View v) {
 
 		Intent intent = new Intent(GameOver.this, Game.class);
+		intent.putExtra("globalScores", globalScores);
+		intent.putExtra("localScores", localScores);
 		startActivity(intent);
 	    }
 	});
@@ -106,8 +108,7 @@ public class GameOver extends Activity {
 		public void handleMessage(Message msg) {
 		    @SuppressWarnings("unchecked")
 		    ArrayList<Score> s = (ArrayList<Score>) msg.obj;
-		    globalScores = s;
-		    helper.sortContacts(globalScores);
+		    globalScores = helper.sortContacts(s);
 		}
 	    };
 	    jsonFunctions.setHandler(handler);

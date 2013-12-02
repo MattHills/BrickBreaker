@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +31,14 @@ public class CustomListAdapter extends ArrayAdapter<Score> {
     private int resource;
 
     private ArrayList<Score> scores;
+    private Score newScore;
 
     public CustomListAdapter(Context context, int resource,
-	    ArrayList<Score> scores) {
+	    ArrayList<Score> scores, Score newScore) {
 	super(context, resource, scores);
 	this.scores = scores;
 	this.resource = resource;
+	this.newScore = newScore;
     }
 
     @Override
@@ -59,6 +62,13 @@ public class CustomListAdapter extends ArrayAdapter<Score> {
 
 	    alertText.setText(index + 1 + " " + score.getName() + ": "
 		    + score.getScore());
+	    if (score.getName() == newScore.getName()
+		    && score.getScore() == newScore.getScore()
+		    && (score.getDate() != null && score.getDate() == newScore
+			    .getDate())) {
+		alertText.setBackgroundColor(Color.GRAY);
+	    }
+
 	}
 	return scoreView;
     }

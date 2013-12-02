@@ -22,6 +22,10 @@ public class Game extends Activity implements SensorEventListener {
     private ArrayList<Score> globalScores;
     private ArrayList<Score> localScores;
 
+    private static final int EASY_DIFFICULTY = 1;
+    private static final int MEDIUM_DIFFICULTY = 2;
+    private static final int HARD_DIFFICULTY = 3;
+
     /** Called when the activity is first created. */
     @SuppressWarnings("unchecked")
     @Override
@@ -43,7 +47,17 @@ public class Game extends Activity implements SensorEventListener {
 	SharedPreferences prefs = PreferenceManager
 		.getDefaultSharedPreferences(this);
 	name = prefs.getString("username", "NOT SET");
-	gamePanel = new GamePanel(this, size, globalScores, localScores, name);
+	String prefDiff = prefs.getString("difficulty", "Easy");
+	int difficulty = EASY_DIFFICULTY;
+
+	if (prefDiff.equalsIgnoreCase("Medium")) {
+	    difficulty = MEDIUM_DIFFICULTY;
+	} else if (prefDiff.equalsIgnoreCase("Hard")) {
+	    difficulty = HARD_DIFFICULTY;
+	}
+
+	gamePanel = new GamePanel(this, size, globalScores, localScores, name,
+		difficulty);
 	setContentView(gamePanel);
     }
 

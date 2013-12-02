@@ -40,28 +40,7 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
 	String result;
 	j = null;
 	try {
-	    if (uploadScore == null) {
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(
-			"http://brockcoscbrickbreakerleaderboard.web44.net/db_config.php");
-		httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
-		HttpResponse response = httpClient.execute(httpPost);
-		HttpEntity entity = response.getEntity();
-		InputStream is = entity.getContent();
-
-		BufferedReader reader = new BufferedReader(
-			new InputStreamReader(is, "iso-8859-1"), 8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-		    sb.append(line + "\n");
-		}
-		is.close();
-		result = sb.toString();
-
-		j = new JSONArray(result);
-
-	    } else {
+	    if (uploadScore != null) {
 		lbScores.add(new BasicNameValuePair("score", String
 			.valueOf(uploadScore.getScore())));
 		lbScores.add(new BasicNameValuePair("name", uploadScore
@@ -72,21 +51,40 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
 			"http://brockcoscbrickbreakerleaderboard.web44.net/db_insert.php");
 		httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
 		HttpResponse response = httpClient.execute(httpPost);
-		HttpEntity entity = response.getEntity();
-		InputStream is = entity.getContent();
-
-		BufferedReader reader = new BufferedReader(
-			new InputStreamReader(is, "iso-8859-1"), 8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-		    sb.append(line + "\n");
-		}
-		is.close();
-		result = sb.toString();
-
-		j = new JSONArray(result);
+		// HttpEntity entity = response.getEntity();
+		// InputStream is = entity.getContent();
+		//
+		// BufferedReader reader = new BufferedReader(
+		// new InputStreamReader(is, "iso-8859-1"), 8);
+		// StringBuilder sb = new StringBuilder();
+		// String line = null;
+		// while ((line = reader.readLine()) != null) {
+		// sb.append(line + "\n");
+		// }
+		// is.close();
+		// result = sb.toString();
+		//
+		// j = new JSONArray(result);
 	    }
+	    HttpClient httpClient = new DefaultHttpClient();
+	    HttpPost httpPost = new HttpPost(
+		    "http://brockcoscbrickbreakerleaderboard.web44.net/db_config.php");
+	    httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
+	    HttpResponse response = httpClient.execute(httpPost);
+	    HttpEntity entity = response.getEntity();
+	    InputStream is = entity.getContent();
+
+	    BufferedReader reader = new BufferedReader(new InputStreamReader(
+		    is, "iso-8859-1"), 8);
+	    StringBuilder sb = new StringBuilder();
+	    String line = null;
+	    while ((line = reader.readLine()) != null) {
+		sb.append(line + "\n");
+	    }
+	    is.close();
+	    result = sb.toString();
+
+	    j = new JSONArray(result);
 
 	} catch (Exception e) {
 	    e.printStackTrace();

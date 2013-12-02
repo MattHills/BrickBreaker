@@ -20,9 +20,9 @@ public class ScoreComparator implements Comparator<Score> {
     public int compare(Score lhs, Score rhs) {
 	int ret;
 	if (lhs.getScore() > rhs.getScore())
-	    ret = 1;
-	else
 	    ret = -1;
+	else
+	    ret = 1;
 	return ret;
     }
 }

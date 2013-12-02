@@ -1,6 +1,7 @@
 package ca.brocku.cosc.BrickBreaker;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
@@ -36,6 +37,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     int prevX;
     int barLines;
     int gameLevel;
+    int difficulty;
 
     android.graphics.PointF barPos;
     public static float ballRadius;
@@ -54,12 +56,13 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
     public GamePanel(Context context, Point size,
 	    ArrayList<Score> globalScores, ArrayList<Score> localScores,
-	    String name) {
+	    String name, int difficulty) {
 	super(context);
 	this.size = size;
 	this.globalScores = globalScores;
 	this.localScores = localScores;
 	this.name = name;
+	this.difficulty = difficulty;
 
 	// initialize Paint objects for drawing objects
 	paint = new Paint();
@@ -68,8 +71,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	antiAliasPaint.setColor(Colour.BALL_COLOUR);
 	textPaint = new Paint();
 	textPaint.setColor(Color.WHITE);
-	textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-	textPaint.setTextSize(20);
+
+	textPaint.setTextSize(50);
 
 	lives = STARTING_LIVES;
 	barLines = 0;
@@ -185,7 +188,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private void resetBar() {
 
 	bar.setPosition(panelWidth / 2, panelHeight / 8);
-	bar.initialize(panelWidth, panelHeight);
+
+	bar.initialize(panelWidth, panelHeight, difficulty);
     }
 
     public void Draw(Canvas canvas) {
@@ -220,6 +224,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    Score newScore = new Score();
 	    newScore.setName(name);
 	    newScore.setScore(score);
+	    newScore.setDate(new Date());
 	    intent.putExtra("score", newScore);
 	    this.getContext().startActivity(intent);
 	    gameThread.stopThread();
@@ -258,10 +263,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 	// draw bar
 	paint.setColor(Colour.BALL_COLOUR);
+
 	canvas.drawRect(bar.getRect(), paint);
 
 	canvas.drawText("Lives: " + lives, 0, panelHeight - 50, textPaint);
-	canvas.drawText("Score: " + score, panelWidth - 300, panelHeight - 50,
+	canvas.drawText("Score: " + score, panelWidth - 400, panelHeight - 50,
 		textPaint);
     }
 

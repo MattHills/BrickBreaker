@@ -17,6 +17,9 @@ public class Bar {
     int barWidth;
     int barCenter;
 
+    private static final int EASY_DIFFICULTY = 1;
+    private static final int MEDIUM_DIFFICULTY = 2;
+
     boolean initialized;
 
     public Bar() {
@@ -28,10 +31,17 @@ public class Bar {
 	yPosition = y;
     }
 
-    public void initialize(int panelWidth, int panelHeight) {
+    public void initialize(int panelWidth, int panelHeight, int difficulty) {
 	this.panelWidth = panelWidth;
 	this.panelHeight = panelHeight;
-	barWidth = (panelWidth / 5);
+
+	if (difficulty == EASY_DIFFICULTY) {
+	    barWidth = panelWidth / 3;
+	} else if (difficulty == MEDIUM_DIFFICULTY) {
+	    barWidth = panelWidth / 5;
+	} else {
+	    barWidth = panelWidth / 7;
+	}
 	barHeight = panelHeight / 40;
 	barCenter = barWidth / 2;
 

@@ -25,6 +25,7 @@ public class Leaderboards extends Activity {
 
     private ArrayList<Score> localScores;
     private ArrayList<Score> globalScores;
+    private Score highScore;
     private Spinner spinner;
     private ListView lv;
     private CustomListAdapter adapter;
@@ -37,9 +38,11 @@ public class Leaderboards extends Activity {
 		"localScores");
 	globalScores = (ArrayList<Score>) getIntent().getSerializableExtra(
 		"globalScores");
+	highScore = (Score) getIntent().getSerializableExtra("highScore");
 	setContentView(R.layout.activity_leaderboards);
 
-	adapter = new CustomListAdapter(this, R.layout.listitems, localScores);
+	adapter = new CustomListAdapter(this, R.layout.listitems, localScores,
+		highScore);
 
 	lv = (ListView) findViewById(R.id.listView);
 
@@ -55,6 +58,12 @@ public class Leaderboards extends Activity {
 
     }
 
+    public void setAdapter(ArrayList<Score> scores) {
+	adapter = new CustomListAdapter(this, R.layout.listitems, scores,
+		highScore);
+	lv.setAdapter(adapter);
+    }
+
     // Spinner onclick
     public void addListenerOnSpinnerItemSelection() {
 	spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -64,14 +73,12 @@ public class Leaderboards extends Activity {
 	    public void onItemSelected(AdapterView<?> arg0, View arg1,
 		    int index, long arg3) {
 		if (index == 1) {
-		    adapter.clear();
-		    adapter.addAll(globalScores);
+		    setAdapter(globalScores);
 		} else {
-		    adapter.clear();
-		    adapter.addAll(localScores);
+		    setAdapter(localScores);
 		}
 		// Notifies adapter to show the extra fields
-		adapter.notifyDataSetChanged();
+		// adapter.notifyDataSetChanged();
 	    }
 
 	    @Override

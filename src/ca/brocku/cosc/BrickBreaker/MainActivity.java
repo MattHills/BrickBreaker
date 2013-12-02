@@ -33,6 +33,8 @@ public class MainActivity extends Activity {
     ArrayList<Score> scores;
     ArrayList<Score> globalScores;
 
+    Score hScore;
+
     Boolean onlineLeaderboard;
 
     BrickBreakerHelper helper;
@@ -64,6 +66,7 @@ public class MainActivity extends Activity {
 			Leaderboards.class);
 		intent.putExtra("localScores", scores);
 		intent.putExtra("globalScores", globalScores);
+		intent.putExtra("highScore", hScore);
 		startActivity(intent);
 	    }
 	});
@@ -184,6 +187,7 @@ public class MainActivity extends Activity {
 	    ScoreComparator comparator = new ScoreComparator();
 	    Collections.sort(scores, comparator);
 	    Score hs = scores.get(0);
+	    hScore = hs;
 	    highScore.setText("High Score: " + hs.getScore());
 	}
     }
