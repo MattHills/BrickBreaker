@@ -10,6 +10,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,7 +18,7 @@ import android.view.SurfaceView;
 
 public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     // constants
-    public static final int STARTING_LIVES = 1;
+    public static final int STARTING_LIVES = 4;
 
     // game objects
     private List<Brick> bricks;
@@ -39,8 +40,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     int gameLevel;
     int difficulty;
 
-    android.graphics.PointF barPos;
-    public static float ballRadius;
+    PointF barPos;
+    public static int ballRadius;
 
     boolean gameRunning;
 
@@ -122,7 +123,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		j += brickMaxW + brickPadding;
 	    }
 	}
-
+		
 	ball = new Ball(ballRadius);
 	ball.initialize(panelWidth, panelHeight);
 

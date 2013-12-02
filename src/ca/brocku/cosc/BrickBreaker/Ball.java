@@ -2,6 +2,8 @@ package ca.brocku.cosc.BrickBreaker;
 
 import java.util.List;
 
+import android.graphics.Rect;
+
 /**
  * Created by dl08ti on 18/11/13.
  */
@@ -13,28 +15,34 @@ public class Ball {
     boolean initialized;
     boolean isAlive;
 
-    float radius;
+    int radius;
     float xDirection;
     float yDirection;
     float speed;
+    Rect boundingBox;
 
     int canvasHeight;
     int canvasWidth;
 
-    public Ball(float radius) {
-	this.radius = radius;
-
-	initialized = false;
-	isAlive = true;
-
-	speed = 4;
-	xDirection = -3;
-	yDirection = -3;
-    }
-
+    public Ball(int radius) {
+		this.radius = radius;
+	
+		initialized = false;
+		isAlive = true;
+	
+		speed = 3;
+		xDirection = -3;
+		yDirection = -3;
+		
+		boundingBox = new Rect(0, 0, radius*2, radius*2);
+		boundingBox.offset(xPosition, yPosition);
+	}
+	
     public void setPosition(int x, int y) {
-	xPosition = x;
-	yPosition = y;
+		xPosition = x;
+		yPosition = y;
+		boundingBox = new Rect(0, 0, radius*2, radius*2);
+		boundingBox.offset(x - radius, y - radius);
     }
 
     public float getSpeed() {
@@ -53,49 +61,54 @@ public class Ball {
     }
 
     public int updatePosition(List<Brick> bricks, Bar bar) {
-	xPosition += speed * xDirection;
-	yPosition += speed * yDirection;
-	int collisionSide, ret = 0;
-
-	/* Collision with walls and bottom of screen */
-	if (xPosition >= (canvasWidth - radius)) {
-	    xPosition = (int) (canvasWidth - radius);
-	    xDirection *= -1.0;
-	} else if (xPosition <= radius) {
-	    xPosition = (int) radius;
-	    xDirection *= -1.0;
-	}
-
-	if (yPosition >= (canvasHeight - radius)) {
-	    isAlive = false;
-	} else if (yPosition <= radius) {
-	    yPosition = (int) radius;
-	    yDirection *= -1.0;
-	}
-
-	/* Collision with bricks */
-	for (int i = 0; i < bricks.size(); i++) {
-
-	    collisionSide = bricks.get(i).checkCollision(xPosition, yPosition,
-		    radius);
-
-	    switch (collisionSide) {
-	    case Brick.TOP_BOTTOM:
-		yDirection *= -1.0;
-		ret = 1;
-		break;
-
-	    case Brick.LEFT_RIGHT:
-		xDirection *= -1.0;
-		ret = 1;
-		break;
-	    default:
-		break;
-	    }
-	}
+		xPosition += speed * xDirection;
+		yPosition += speed * yDirection;
+		
+		boundingBox = new Rect(0, 0, radius*2, radius*2);
+		boundingBox.offset(xPosition - radius, yPosition - radius);	
+		System.out.println(boundingBox.left + " " + boundingBox.top);
+		
+		int collisionSide, ret = 0;
+	
+		/* Collision with walls and bottom of screen */
+		if (xPosition >= (canvasWidth - radius)) {
+		    xPosition = (int) (canvasWidth - radius);
+		    xDirection *= -1.0;
+		} else if (xPosition <= radius) {
+		    xPosition = (int) radius;
+		    xDirection *= -1.0;
+		}
+	
+		if (yPosition >= (canvasHeight - radius)) {
+		    isAlive = false;
+		} else if (yPosition <= radius) {
+		    yPosition = (int) radius;
+		    yDirection *= -1.0;
+		}
+	
+		/* Collision with bricks */
+		for (int i = 0; i < bricks.size(); i++) {
+	
+		    collisionSide = bricks.get(i).checkCollision(boundingBox);
+	
+		    switch (collisionSide) {
+			    case Brick.TOP_BOTTOM:
+				yDirection *= -1.0;
+				ret = 1;
+				break;
+		
+			    case Brick.LEFT_RIGHT:
+				xDirection *= -1.0;
+				ret = 1;
+				break;
+				
+			    default:
+				break;
+			}
+		}
 
 	/* Collision with bar */
-	collisionSide = bar.checkCollision(xPosition, yPosition, radius);
+	collisionSide = bar.checkCollision(boundingBox);
 
 	switch (collisionSide) {
 	case Brick.TOP_BOTTOM:

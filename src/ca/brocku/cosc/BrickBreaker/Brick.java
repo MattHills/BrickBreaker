@@ -40,24 +40,23 @@ public class Brick {
     	return rect;
     }
 
-    public int checkCollision(int xPosition, int yPosition, float radius) {
-		// top and bottom detection
-		if (xPosition + radius >= rect.left && xPosition - radius <= rect.right) {
-		    if (yPosition - radius <= rect.bottom && yPosition + radius >= rect.top) {
-		    	//ball.setPosition(ball.xPosition, (int)(rect.bottom - ball.radius));
-		    	onCollision();
-				return Brick.TOP_BOTTOM;
-		    }
-		}
-
-		// left and right detection
-		if (yPosition + radius >= rect.bottom && yPosition - radius <= rect.top) {
-		    if (xPosition - radius <= rect.left && xPosition + radius >= rect.right) {
-		    	//ball.setPosition((int)(rect.left - ball.radius), ball.yPosition);
-		    	onCollision();
-				return Brick.LEFT_RIGHT;
-		    }
-		}
+    public int checkCollision(Rect boundingBox) {
+		
+    	Rect intersection = boundingBox;
+    	
+    	boolean intersectsBrick = intersection.intersect(rect);
+    	
+    	if(intersectsBrick)
+	    	if((intersection.bottom - intersection.top) > (intersection.right - intersection.left))
+	    	{
+	    		onCollision();
+	    		return Brick.LEFT_RIGHT;
+	    	}
+	    	else
+	    	{
+	    		onCollision();
+	    		return Brick.TOP_BOTTOM;
+	    	}
 
 		return 0;
     }
