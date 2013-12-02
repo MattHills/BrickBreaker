@@ -50,48 +50,50 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     Paint antiAliasPaint;
     Paint textPaint;
 
-    public GamePanel(Context context, Point size) {
-	super(context);
-	this.size = size;
-
-	//initialize Paint objects for drawing objects
-	paint = new Paint();
-	antiAliasPaint = new Paint();
-	antiAliasPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-	antiAliasPaint.setColor(Colour.BALL_COLOUR);
-	textPaint = new Paint();
-	textPaint.setColor(Color.WHITE);
-	textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-	textPaint.setTextSize(20);
-
-	lives = STARTING_LIVES;
-	barLines = 0;
-	gameLevel = 0;
-
-	barPos = new android.graphics.PointF();
-	barPos.x = 0;
-	barPos.y = 0;
-	getHolder().addCallback(this);
-	gameThread = new GameThread(getHolder(), this);
-
-	setFocusable(true);
+    public GamePanel(Context context, Point size) 
+    {
+		super(context);
+		this.size = size;
+	
+		//initialize Paint objects for drawing objects
+		paint = new Paint();
+		antiAliasPaint = new Paint();
+		antiAliasPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		antiAliasPaint.setColor(Colour.BALL_COLOUR);
+		textPaint = new Paint();
+		textPaint.setColor(Color.WHITE);
+		textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		textPaint.setTextSize(20);
+	
+		lives = STARTING_LIVES;
+		barLines = 0;
+		gameLevel = 0;
+	
+		barPos = new android.graphics.PointF();
+		barPos.x = 0;
+		barPos.y = 0;
+		getHolder().addCallback(this);
+		gameThread = new GameThread(getHolder(), this);
+	
+		setFocusable(true);
     }
 
-    public void initializePanel(Canvas canvas) {
-
-	panelWidth = size.x;
-	panelHeight = size.y;
-
-	// brickWidth = panelWidth / 6;
-	brickHeight = panelHeight / 30;
-	brickPadding = panelWidth / 18;
-
-	ballRadius = panelHeight / 100;
-
-	loadLevel();
+    public void initializePanel(Canvas canvas) 
+    {
+		panelWidth = size.x;
+		panelHeight = size.y;
+	
+		// brickWidth = panelWidth / 6;
+		brickHeight = panelHeight / 30;
+		brickPadding = panelWidth / 18;
+	
+		ballRadius = panelHeight / 100;
+	
+		loadLevel();
     }
 
-    private void loadLevel() {
+    private void loadLevel() 
+    {
 	gameRunning = false;
 	int numBricks, brickMaxW, hitsReq;
 
@@ -114,22 +116,22 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    }
 	}
 
-	 b = new Brick(20, 20, brickWidth, brickHeight, Colour.BLUE1,
-	 1);
-	 bricks.add(b);
-	 b = new Brick(50, 50, brickWidth, brickHeight, Colour.BLUE2, 2);
-	 bricks.add(b);
-	 b = new Brick(200, 120, brickWidth, brickHeight, Colour.GREEN1, 2);
-	 bricks.add(b);
-	 b = new Brick(240, 130, brickWidth, brickHeight, Colour.ORANGE, 2);
-	 bricks.add(b);
-	
-	 b = new Brick(360, 180, brickWidth, brickHeight, Colour.PURPLE, 1);
-	 bricks.add(b);
-	 b = new Brick(250, 350, brickWidth, brickHeight, Colour.RED, 2);
-	 bricks.add(b);
-	 b = new Brick(0, 450, brickWidth, brickHeight, Colour.YELLOW, 1);
-	 bricks.add(b);
+//	 b = new Brick(20, 20, brickWidth, brickHeight, Colour.BLUE1,
+//	 1);
+//	 bricks.add(b);
+//	 b = new Brick(50, 50, brickWidth, brickHeight, Colour.BLUE2, 2);
+//	 bricks.add(b);
+//	 b = new Brick(200, 120, brickWidth, brickHeight, Colour.GREEN1, 2);
+//	 bricks.add(b);
+//	 b = new Brick(240, 130, brickWidth, brickHeight, Colour.ORANGE, 2);
+//	 bricks.add(b);
+//	
+//	 b = new Brick(360, 180, brickWidth, brickHeight, Colour.PURPLE, 1);
+//	 bricks.add(b);
+//	 b = new Brick(250, 350, brickWidth, brickHeight, Colour.RED, 2);
+//	 bricks.add(b);
+//	 b = new Brick(0, 450, brickWidth, brickHeight, Colour.YELLOW, 1);
+//	 bricks.add(b);
 
 	ball = new Ball(ballRadius);
 	ball.initialize(panelWidth, panelHeight);

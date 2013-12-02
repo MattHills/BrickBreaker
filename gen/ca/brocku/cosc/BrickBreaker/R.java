@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.example.brickbreaker;
+package ca.brocku.cosc.BrickBreaker;
 
 public final class R {
     public static final class array {

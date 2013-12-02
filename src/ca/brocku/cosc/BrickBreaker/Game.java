@@ -18,20 +18,20 @@ public class Game extends Activity implements SensorEventListener {
 
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-	super.onCreate(savedInstanceState);
-
-	// Remove title bar
-	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-	Display display = getWindowManager().getDefaultDisplay();
-	Point size = new Point();
-	display.getSize(size);
-	gamePanel = new GamePanel(this, size);
-	setContentView(gamePanel);
-
+    public void onCreate(Bundle savedInstanceState) 
+    {
+		super.onCreate(savedInstanceState);
 	
+		// Remove title bar
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+	
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		
+		display.getSize(size);
+		
+		gamePanel = new GamePanel(this, size);
+		setContentView(gamePanel);
     }
     
     
@@ -57,21 +57,21 @@ public class Game extends Activity implements SensorEventListener {
 
     }
 
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(Sensor sensor, int accuracy) 
+    {   
+    	
     }
 
-    public void onSensorChanged(SensorEvent event) {
-
-	// check sensor type
-	if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
-	    gamePanel.updateAccelerometer(-event.values[0]);
-	    // mBallSpd.y = event.values[1];
-	    // send values to the GamePanel
-	    // gamePanel.updateAccelerometer(event.values[0], event.values[1],
-	    // event.values[2]);
-	}
-    }
-    
-    
+    public void onSensorChanged(SensorEvent event) 
+    {
+    	// check sensor type
+		if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) 
+		{
+		    gamePanel.updateAccelerometer(-event.values[0]);
+		    // mBallSpd.y = event.values[1];
+		    // send values to the GamePanel
+		    // gamePanel.updateAccelerometer(event.values[0], event.values[1],
+		    // event.values[2]);
+		}
+    }    
 }

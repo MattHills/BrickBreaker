@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.brickbreaker"
+    package="ca.brocku.cosc.BrickBreaker"
     android:versionCode="1"
     android:versionName="1.0" >
-	<uses-feature android:glEsVersion="0x00020000" android:required="true" />
 	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="18" />
@@ -25,14 +25,14 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="ca.brocku.cosc.BrickBreaker.Game"></activity>
+        <activity android:name="ca.brocku.cosc.BrickBreaker.Game" android:noHistory="true"></activity>
          <activity   
             android:name="ca.brocku.cosc.BrickBreaker.BrickBreakerPreferencesActivity" 
             android:label="@string/preferences">
  		</activity>
          
          <activity android:name="ca.brocku.cosc.BrickBreaker.GameOver"
-             		android:label="@string/game_over">
+             		android:label="@string/game_over" android:noHistory="true">
              
          </activity>
     

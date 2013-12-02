@@ -1,7 +1,5 @@
 package ca.brocku.cosc.BrickBreaker;
 
-import com.example.brickbreaker.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +15,8 @@ public class GameOver extends Activity {
 
 	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.game_over);
 	    
@@ -25,18 +24,22 @@ public class GameOver extends Activity {
 	    mainMenu = (Button)findViewById(R.id.menu_button);
 	    newGame = (Button)findViewById(R.id.new_game);
 	    
-	    mainMenu.setOnClickListener(new View.OnClickListener() {
+	    mainMenu.setOnClickListener(new View.OnClickListener() 
+	    {
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v) 
+			{
 				
 				Intent intent = new Intent(GameOver.this, MainActivity.class);
 				startActivity(intent);				
 			}
 		});
 	    
-	    newGame.setOnClickListener(new View.OnClickListener() {
+	    newGame.setOnClickListener(new View.OnClickListener() 
+	    {
 			@Override
-			public void onClick(View v) {
+			public void onClick(View v) 
+			{
 
 				Intent intent = new Intent(GameOver.this, Game.class);
 				startActivity(intent);				
@@ -52,5 +55,12 @@ public class GameOver extends Activity {
 		
 		//populate ListView topScores 
 	}
-
+	
+	@Override
+    public void onBackPressed() 
+	{
+		Intent intent = new Intent(GameOver.this, MainActivity.class);
+		startActivity(intent);
+		super.onBackPressed();
+    }
 }

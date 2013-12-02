@@ -19,8 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.brickbreaker.R;
-
 public class MainActivity extends Activity {
 
     Button quickPlay;
@@ -108,7 +106,7 @@ public class MainActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 	if (requestCode == 1) {
 	    if (resultCode == RESULT_OK) {
-		setName();
+	    	setName();
 	    }
 	}
 
@@ -169,7 +167,7 @@ public class MainActivity extends Activity {
 	return contacts;
     }
 
-    // Saving contacts to a file
+    // Saving scores to a file
     private void saveHighScore() {
 
 	FileOutputStream os;
