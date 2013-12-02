@@ -24,6 +24,8 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     private Bar bar;
     private Point size;
     private ArrayList<Score> globalScores;
+    private ArrayList<Score> localScores;
+    private String name;
 
     // game options
     int panelWidth;
@@ -50,10 +52,14 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
     Paint antiAliasPaint;
     Paint textPaint;
 
-    public GamePanel(Context context, Point size, ArrayList<Score> globalScores) {
+    public GamePanel(Context context, Point size,
+	    ArrayList<Score> globalScores, ArrayList<Score> localScores,
+	    String name) {
 	super(context);
 	this.size = size;
 	this.globalScores = globalScores;
+	this.localScores = localScores;
+	this.name = name;
 
 	// initialize Paint objects for drawing objects
 	paint = new Paint();
@@ -210,6 +216,11 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	} else {
 	    Intent intent = new Intent(this.getContext(), GameOver.class);
 	    intent.putExtra("globalScores", globalScores);
+	    intent.putExtra("localScores", localScores);
+	    Score newScore = new Score();
+	    newScore.setName(name);
+	    newScore.setScore(score);
+	    intent.putExtra("score", score);
 	    this.getContext().startActivity(intent);
 	}
 

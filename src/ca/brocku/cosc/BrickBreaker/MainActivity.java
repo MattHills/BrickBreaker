@@ -2,9 +2,7 @@ package ca.brocku.cosc.BrickBreaker;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -18,6 +16,7 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -34,6 +33,10 @@ public class MainActivity extends Activity {
     ArrayList<Score> scores;
     ArrayList<Score> globalScores;
 
+    Boolean onlineLeaderboard;
+
+    BrickBreakerHelper helper;
+
     private final String filename = "BrickBreakerLocalLeaderboard";
 
     @Override
@@ -41,17 +44,16 @@ public class MainActivity extends Activity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_main);
 
+	SharedPreferences prefs = PreferenceManager
+		.getDefaultSharedPreferences(this);
+
+	onlineLeaderboard = prefs.getBoolean("uploadToLeaderboard", false);
+
+	helper = new BrickBreakerHelper();
+
 	quickPlay = (Button) findViewById(R.id.QuickPlay);
 
-	quickPlay.setOnClickListener(new View.OnClickListener() {
-
-	    @Override
-	    public void onClick(View v) {
-		Intent intent = new Intent(MainActivity.this, Game.class);
-		intent.putExtra("globalScores", globalScores);
-		startActivity(intent);
-	    }
-	});
+	quickPlay.setOnClickListener(getQuickPlayOnClickListener());
 
 	leaderboards = (Button) findViewById(R.id.Leaderboards);
 	leaderboards.setOnClickListener(new View.OnClickListener() {
@@ -78,10 +80,34 @@ public class MainActivity extends Activity {
 	    scores = new ArrayList<Score>();
 	}
 
-	sortScores(scores);
+	helper.sortContacts(scores);
 
 	displayHighScore();
 
+	if (onlineLeaderboard) {
+	    getOnlineLeaderboard();
+	}
+
+	//
+	// MySQLHelper db = new MySQLHelper(this);
+	// db.getScores();
+    }
+
+    private OnClickListener getQuickPlayOnClickListener() {
+	return new View.OnClickListener() {
+
+	    @Override
+	    public void onClick(View v) {
+		Intent intent = new Intent(MainActivity.this, Game.class);
+		intent.putExtra("globalScores", globalScores);
+		intent.putExtra("localScores", scores);
+
+		startActivity(intent);
+	    }
+	};
+    }
+
+    protected void getOnlineLeaderboard() {
 	jsonFunctions = new JSONFunctions();
 	Handler handler = new Handler() {
 	    @Override
@@ -89,21 +115,12 @@ public class MainActivity extends Activity {
 		@SuppressWarnings("unchecked")
 		ArrayList<Score> s = (ArrayList<Score>) msg.obj;
 		globalScores = s;
-		sortScores(globalScores);
+		helper.sortContacts(globalScores);
 	    }
 	};
 	jsonFunctions.setHandler(handler);
 	jsonFunctions
 		.execute("http://brockcoscbrickbreakerleaderboard.web44.net/");
-
-	//
-	MySQLHelper db = new MySQLHelper(this);
-	// db.getScores();
-    }
-
-    protected void sortScores(ArrayList<Score> globalScores2) {
-	// TODO Auto-generated method stub
-
     }
 
     // Add custom menu buttons for the phones built in menu button
@@ -136,6 +153,14 @@ public class MainActivity extends Activity {
 	if (requestCode == 1) {
 	    if (resultCode == RESULT_OK) {
 		setName();
+		SharedPreferences prefs = PreferenceManager
+			.getDefaultSharedPreferences(this);
+		onlineLeaderboard = prefs.getBoolean("uploadToLeaderboard",
+			false);
+		if (onlineLeaderboard) {
+		    getOnlineLeaderboard();
+		    quickPlay.setOnClickListener(getQuickPlayOnClickListener());
+		}
 	    }
 	}
 
@@ -186,7 +211,6 @@ public class MainActivity extends Activity {
 	    }
 	    if (!exists) {
 		scores = null;
-		saveHighScore();
 	    }
 
 	} catch (Exception e) {
@@ -196,26 +220,4 @@ public class MainActivity extends Activity {
 	return contacts;
     }
 
-    // Saving scores to a file
-    private void saveHighScore() {
-
-	FileOutputStream os;
-
-	try {
-	    boolean exists = (new File(this.getFilesDir() + filename).exists());
-	    // Create the file and directories if they do not exist
-	    if (!exists) {
-		new File(this.getFilesDir() + "").mkdirs();
-		new File(this.getFilesDir() + filename);
-	    }
-	    // Saving the file
-	    os = new FileOutputStream(this.getFilesDir() + filename, false);
-	    ObjectOutputStream oos = new ObjectOutputStream(os);
-	    oos.writeObject(scores);
-	    oos.close();
-	    os.close();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-    }
 }
