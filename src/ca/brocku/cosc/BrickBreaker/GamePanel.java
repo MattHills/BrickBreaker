@@ -220,8 +220,9 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    Score newScore = new Score();
 	    newScore.setName(name);
 	    newScore.setScore(score);
-	    intent.putExtra("score", score);
+	    intent.putExtra("score", newScore);
 	    this.getContext().startActivity(intent);
+	    gameThread.stopThread();
 	}
 
     }

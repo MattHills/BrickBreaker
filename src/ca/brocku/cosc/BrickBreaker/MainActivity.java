@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
 	    scores = new ArrayList<Score>();
 	}
 
-	helper.sortContacts(scores);
+	scores = helper.sortContacts(scores);
 
 	displayHighScore();
 
@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
 		@SuppressWarnings("unchecked")
 		ArrayList<Score> s = (ArrayList<Score>) msg.obj;
 		globalScores = s;
-		helper.sortContacts(globalScores);
+		globalScores = helper.sortContacts(globalScores);
 	    }
 	};
 	jsonFunctions.setHandler(handler);

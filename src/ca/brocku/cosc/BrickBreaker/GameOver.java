@@ -48,13 +48,18 @@ public class GameOver extends Activity {
 		"localScores");
 	this.score = (Score) getIntent().getSerializableExtra("score");
 
-	globalScores.add(score);
-	localScores.add(score);
-
 	helper = new BrickBreakerHelper();
 
-	helper.sortContacts(globalScores);
-	helper.sortContacts(localScores);
+	if (globalScores != null) {
+	    globalScores.add(score);
+	    globalScores = helper.sortContacts(globalScores);
+	}
+	if (localScores != null) {
+	    localScores.add(score);
+	    localScores = helper.sortContacts(localScores);
+	}
+
+	addScoreToLeaderboard();
 
 	topScores = (ListView) findViewById(R.id.listview_top_scores);
 	mainMenu = (Button) findViewById(R.id.menu_button);
@@ -67,6 +72,8 @@ public class GameOver extends Activity {
 	    adapter = new CustomListAdapter(this, R.layout.listitems,
 		    localScores);
 	}
+
+	topScores.setAdapter(adapter);
 
 	mainMenu.setOnClickListener(new View.OnClickListener() {
 	    @Override
