@@ -32,7 +32,11 @@ public final class R {
         public static final int Leaderboards=0x7f0a0002;
         public static final int QuickPlay=0x7f0a0001;
         public static final int Username=0x7f0a0000;
-        public static final int menuSettings=0x7f0a0004;
+        public static final int listview_top_scores=0x7f0a0005;
+        public static final int menuSettings=0x7f0a0008;
+        public static final int menu_button=0x7f0a0007;
+        public static final int new_game=0x7f0a0006;
+        public static final int textview_top_scores=0x7f0a0004;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -44,7 +48,10 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f070001;
         public static final int app_name=0x7f070000;
+        public static final int button_main_menu=0x7f07000e;
+        public static final int button_new_game=0x7f07000d;
         public static final int difficulty=0x7f070008;
+        public static final int game_over=0x7f07000b;
         public static final int hello_world=0x7f070002;
         public static final int leaderboards=0x7f070005;
         public static final int login=0x7f070006;
@@ -53,6 +60,7 @@ public final class R {
         public static final int select_game_difficulty=0x7f070009;
         public static final int settings=0x7f070007;
         public static final int title_activity_open_gl=0x7f070003;
+        public static final int top_scores=0x7f07000c;
     }
     public static final class style {
         /** 
