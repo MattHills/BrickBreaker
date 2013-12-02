@@ -123,7 +123,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 		j += brickMaxW + brickPadding;
 	    }
 	}
-		
+
 	ball = new Ball(ballRadius);
 	ball.initialize(panelWidth, panelHeight);
 
@@ -304,7 +304,7 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    prevX = (int) x;
 
 	    if (Math.abs(barPos.x + x) < 15) {
-		barPos.x += x;
+		barPos.x += x * 2;
 	    } else {
 		if (x < 0)
 		    barPos.x = -15;
@@ -315,7 +315,10 @@ public class GamePanel extends SurfaceView implements SurfaceHolder.Callback {
 	    bar.xPosition = barPos.x;
 
 	    if (gameRunning) {
-		bar.updatePosition();
+		int side = bar.updatePosition();
+		if (side != 0) {
+		    prevX *= -1;
+		}
 	    }
 	}
     }

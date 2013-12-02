@@ -55,38 +55,37 @@ public class Bar {
 	// + GamePanel.ballRadius + barHeight));
     }
 
-    public void updatePosition() {
+    public int updatePosition() {
 	rect.offset((int) xPosition, 0);
+	int ret = 0;
 
 	if (rect.left < 0) {
 	    rect.offsetTo(0, (int) panelHeight - 100 - barHeight);
+	    ret = 1;
 	} else if (rect.right > panelWidth) {
 	    rect.offsetTo(panelWidth - barWidth, (int) panelHeight - 100
 		    - barHeight);
+	    ret = 1;
 	}
+	return ret;
     }
 
-    public int checkCollision(Rect boundingBox) 
-    {
-    	Rect intersection = boundingBox;
-    	
-    	boolean intersectsBrick = intersection.intersect(rect);
-    	
-    	if(intersectsBrick)
-    	{
-	    	if((intersection.bottom - intersection.top) > (intersection.right - intersection.left))
-	    	{
-	    		return Brick.LEFT_RIGHT;
-	    	}
-	    	else
-	    	{
-	    		return Brick.TOP_BOTTOM;
-	    	}
-    	}
-		return 0;
+    public int checkCollision(Rect boundingBox) {
+	Rect intersection = boundingBox;
+
+	boolean intersectsBrick = intersection.intersect(rect);
+
+	if (intersectsBrick) {
+	    if ((intersection.bottom - intersection.top) > (intersection.right - intersection.left)) {
+		return Brick.LEFT_RIGHT;
+	    } else {
+		return Brick.TOP_BOTTOM;
+	    }
 	}
+	return 0;
+    }
 
     public Rect getRect() {
-    	return rect;
+	return rect;
     }
 }
