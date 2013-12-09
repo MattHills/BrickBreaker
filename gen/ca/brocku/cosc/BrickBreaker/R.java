@@ -11,7 +11,8 @@ public final class R {
     public static final class array {
         public static final int entries_list_preference=0x7f050000;
         public static final int entryvalues_list_preference=0x7f050001;
-        public static final int search_array=0x7f050002;
+        public static final int search_array=0x7f050003;
+        public static final int search_array_with_global=0x7f050002;
     }
     public static final class attr {
     }

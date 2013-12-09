@@ -18,9 +18,13 @@
     <string name="button_main_menu">Main Menu</string>
     <string name="search_prompt">Leaderboard Type</string>
     
-    <string-array name="search_array">
+    <string-array name="search_array_with_global">
         <item>Local</item>
         <item>Global</item>
+    </string-array>
+    
+    <string-array name="search_array">
+        <item>Local</item>
     </string-array>
 
 </resources>
