@@ -79,6 +79,8 @@ public class CustomListAdapter extends ArrayAdapter<Score> {
 	    alertText.setText(index + 1 + " " + score.getName() + ": "
 		    + score.getScore());
 
+	    // Checking to see if the score is the new score added,
+	    // if it is it will be highlighted gray.
 	    if ((score.getDate() != null && score.getDate().equals(
 		    newScore.getDate()))
 		    && score.getName().equals(newScore.getName())

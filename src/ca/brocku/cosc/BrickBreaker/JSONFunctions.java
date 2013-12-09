@@ -56,6 +56,8 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
     }
 
     /**
+     * Sets the uploadScore if called from game over the score will be added to
+     * the database if it is not null
      * 
      * @param uploadScore
      */
@@ -64,7 +66,11 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
     }
 
     /*
-     * (non-Javadoc)
+     * Urls is supposed to take in a list of urls that will be called on the
+     * post but we are using a static server, so we do not need them.
+     * 
+     * This method inserts into the database and retrieves scores already in the
+     * table.
      * 
      * 
      * @see android.os.AsyncTask#doInBackground(Params[])
@@ -123,7 +129,13 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
     }
 
     /*
-     * (non-Javadoc)
+     * This method is called when the network calls are completed. JSONArray
+     * result is the list of scores retrieved from the database.
+     * 
+     * This method buildes a local list of scores, and they get feeded back into
+     * the main activity.
+     * 
+     * This is required to allow UI to continued while this task gets excecuted.
      * 
      * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
      */
@@ -131,6 +143,7 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
 	ArrayList<Score> scores = new ArrayList<Score>();
 
 	try {
+	    // Building up the list of scores;
 	    for (int i = 0; i < result.length(); i++) {
 		JSONObject o = result.getJSONObject(i);
 		Score s = new Score();
@@ -142,6 +155,7 @@ public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
 	    e.printStackTrace();
 	}
 
+	// Returning the list of scores
 	Message msg = new Message();
 	msg.obj = scores;
 	handler.sendMessage(msg);

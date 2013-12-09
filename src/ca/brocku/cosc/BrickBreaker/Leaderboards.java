@@ -59,6 +59,9 @@ public class Leaderboards extends Activity {
 	spinner = (Spinner) findViewById(R.id.spinner1);
 
 	ArrayAdapter<?> spinnerAdapter;
+
+	// If the user turns off online leaderboards, globalScores will be null
+	// This just saves a SharedPreferences call
 	if (null == globalScores) {
 	    spinnerAdapter = ArrayAdapter.createFromResource(this,
 		    R.array.search_array, R.layout.custom_spinner);
