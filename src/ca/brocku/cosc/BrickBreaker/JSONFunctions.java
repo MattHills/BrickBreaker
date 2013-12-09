@@ -20,96 +20,115 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 
+/**
+ * 
+ * @author Matt Hills
+ */
+/**
+ * @author Dan
+ *
+ */
 public class JSONFunctions extends AsyncTask<String, String, JSONArray> {
-    private Score uploadScore;
-    private JSONArray j;
-    private Handler handler;
+	    private Score uploadScore;
+	    private JSONArray j;
+	    private Handler handler;
 
+    /**
+     * 
+     * @param handler
+     */
     public void setHandler(Handler handler) {
-	this.handler = handler;
+    	this.handler = handler;
     }
 
+    /**
+     * 
+     * @param uploadScore
+     */
     public void setUploadScore(Score uploadScore) {
-	this.uploadScore = uploadScore;
+    	this.uploadScore = uploadScore;
     }
 
+    /* (non-Javadoc)
+     * 
+     * 
+     * @see android.os.AsyncTask#doInBackground(Params[])
+     */
     @Override
     protected JSONArray doInBackground(String... urls) {
-
-	ArrayList<NameValuePair> lbScores = new ArrayList<NameValuePair>();
-	String result;
-	j = null;
-	try {
-	    if (uploadScore != null) {
-		lbScores.add(new BasicNameValuePair("score", String
-			.valueOf(uploadScore.getScore())));
-		lbScores.add(new BasicNameValuePair("name", uploadScore
-			.getName()));
-
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(
-			"http://brockcoscbrickbreakerleaderboard.web44.net/db_insert.php");
-		httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
-		HttpResponse response = httpClient.execute(httpPost);
-		// HttpEntity entity = response.getEntity();
-		// InputStream is = entity.getContent();
-		//
-		// BufferedReader reader = new BufferedReader(
-		// new InputStreamReader(is, "iso-8859-1"), 8);
-		// StringBuilder sb = new StringBuilder();
-		// String line = null;
-		// while ((line = reader.readLine()) != null) {
-		// sb.append(line + "\n");
-		// }
-		// is.close();
-		// result = sb.toString();
-		//
-		// j = new JSONArray(result);
-	    }
-	    HttpClient httpClient = new DefaultHttpClient();
-	    HttpPost httpPost = new HttpPost(
-		    "http://brockcoscbrickbreakerleaderboard.web44.net/db_config.php");
-	    httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
-	    HttpResponse response = httpClient.execute(httpPost);
-	    HttpEntity entity = response.getEntity();
-	    InputStream is = entity.getContent();
-
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(
-		    is, "iso-8859-1"), 8);
-	    StringBuilder sb = new StringBuilder();
-	    String line = null;
-	    while ((line = reader.readLine()) != null) {
-		sb.append(line + "\n");
-	    }
-	    is.close();
-	    result = sb.toString();
-
-	    j = new JSONArray(result);
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	return j;
-
+	
+		ArrayList<NameValuePair> lbScores = new ArrayList<NameValuePair>();
+		String result;
+		
+		j = null;
+		
+		try {
+		    if (uploadScore != null) {
+				lbScores.add(new BasicNameValuePair("score", String
+					.valueOf(uploadScore.getScore())));
+				lbScores.add(new BasicNameValuePair("name", uploadScore
+					.getName()));
+		
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpPost httpPost = new HttpPost(
+					"http://brockcoscbrickbreakerleaderboard.web44.net/db_insert.php");
+				httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
+				HttpResponse response = httpClient.execute(httpPost);
+		    }
+		    
+		    HttpClient httpClient = new DefaultHttpClient();
+		    HttpPost httpPost = new HttpPost(
+			    "http://brockcoscbrickbreakerleaderboard.web44.net/db_config.php");
+		    
+		    httpPost.setEntity(new UrlEncodedFormEntity(lbScores));
+		    HttpResponse response = httpClient.execute(httpPost);
+		    HttpEntity entity = response.getEntity();
+		    InputStream is = entity.getContent();
+	
+		    BufferedReader reader = new BufferedReader(new InputStreamReader(
+			    is, "iso-8859-1"), 8);
+		    
+		    StringBuilder sb = new StringBuilder();
+		    String line = null;
+		    
+		    while ((line = reader.readLine()) != null) {
+		    	sb.append(line + "\n");
+		    }
+		    
+		    is.close();
+		    result = sb.toString();
+	
+		    j = new JSONArray(result);
+	
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		return j;
     }
 
+    /* (non-Javadoc)
+     * 
+     * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+     */
     protected void onPostExecute(JSONArray result) {
-	ArrayList<Score> scores = new ArrayList<Score>();
-	try {
-	    for (int i = 0; i < result.length(); i++) {
-		JSONObject o = result.getJSONObject(i);
-		Score s = new Score();
-		s.setName(o.get("name").toString());
-		s.setScore(o.getInt("score"));
-		scores.add(s);
-	    }
-
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	Message msg = new Message();
-	msg.obj = scores;
-	handler.sendMessage(msg);
+		ArrayList<Score> scores = new ArrayList<Score>();
+		
+		try {
+		    for (int i = 0; i < result.length(); i++) {
+				JSONObject o = result.getJSONObject(i);
+				Score s = new Score();
+				s.setName(o.get("name").toString());
+				s.setScore(o.getInt("score"));
+				scores.add(s);
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}
+		
+		Message msg = new Message();
+		msg.obj = scores;
+		handler.sendMessage(msg);
 
     }
 }
