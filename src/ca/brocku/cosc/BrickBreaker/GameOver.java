@@ -52,11 +52,11 @@ public class GameOver extends Activity {
 
 	if (globalScores != null) {
 	    globalScores.add(score);
-	    globalScores = helper.sortContacts(globalScores);
+	    globalScores = helper.sortScores(globalScores);
 	}
 	if (localScores != null) {
 	    localScores.add(score);
-	    localScores = helper.sortContacts(localScores);
+	    localScores = helper.sortScores(localScores);
 	}
 
 	addScoreToLeaderboard();
@@ -108,7 +108,7 @@ public class GameOver extends Activity {
 		public void handleMessage(Message msg) {
 		    @SuppressWarnings("unchecked")
 		    ArrayList<Score> s = (ArrayList<Score>) msg.obj;
-		    globalScores = helper.sortContacts(s);
+		    globalScores = helper.sortScores(s);
 		}
 	    };
 	    jsonFunctions.setHandler(handler);

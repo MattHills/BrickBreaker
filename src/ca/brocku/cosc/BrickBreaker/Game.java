@@ -22,9 +22,9 @@ public class Game extends Activity implements SensorEventListener {
     private ArrayList<Score> globalScores;
     private ArrayList<Score> localScores;
 
-    private static final int EASY_DIFFICULTY = 1;
-    private static final int MEDIUM_DIFFICULTY = 2;
-    private static final int HARD_DIFFICULTY = 3;
+    public static final int EASY_DIFFICULTY = 1;
+    public static final int MEDIUM_DIFFICULTY = 2;
+    public static final int HARD_DIFFICULTY = 3;
 
     /** Called when the activity is first created. */
     @SuppressWarnings("unchecked")

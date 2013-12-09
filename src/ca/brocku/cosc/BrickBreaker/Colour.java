@@ -1,15 +1,17 @@
 package ca.brocku.cosc.BrickBreaker;
 
 /**
- * Created by dl08ti on 18/11/13.
- */
-
-/**
- * Colour constants used for colouring bricks Colours come in 3 intensities.
+ * Colour constants for various game objects. Saved as ARGB hex colours
+ * The bricks will randomly select a 3 colour array. Colours for 
+ * colouring bricks come in 3 intensities.
  * 
- * COLOR[0] = bright COLOR[1] = medium COLOR[2] = dark
+ * 		COLOR[0] = bright, COLOR[1] = medium, COLOR[2] = dark
+ * 
+ * Different intensities represent number of hits left to make the
+ * brick disappear.
+ * 
+ * @author Dan Lapp
  */
-
 public class Colour {
     public static final int BALL_COLOUR = 0xffbadc47;
     public static final int BAR_COLOUR = 0xffbcb69f;
